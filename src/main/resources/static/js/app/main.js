@@ -2,17 +2,40 @@
  * Created by Benni on 23.04.2016.
  */
 require.config({
+    shim : {
+        "bootstrap" :       { "deps" :['jquery'] },
+        "leaflet" :         { "deps" :['jquery'] },
+        "leafletDraw" :     { "deps" :['leaflet'] },
+        "bootstrapSelect" : { "deps" :['bootstrap'] }
+    },
     baseUrl: '../js',
     paths: {
         jquery: [
             '//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min',
-            '/lib/jquery-2.2.2.min.js'
+            'lib/jquery-2.2.2.min.js'
         ],
         domReady: [
             '//cdnjs.cloudflare.com/ajax/libs/require-domReady/2.0.1/domReady'
         ],
-        knockout: 'lib/knockout-debug.js',
-        leaflet: 'lib/leaflet'
+        knockout: [
+            'lib/knockout-debug.js'
+        ],
+        leaflet: [
+            'lib/leaflet'
+        ],
+        leafletDraw: [
+            'lib/leaflet.draw'
+        ],
+        bootstrap: [
+            'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
+            'lib/bootstrap.min',
+            'lib/bootstrap'
+        ],
+        bootstrapSelect: [
+            'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
+            'lib/bootstrap.min',
+            'lib/bootstrap'
+        ]
     }
 });
 
