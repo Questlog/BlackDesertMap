@@ -1,0 +1,129 @@
+html, body {
+    height: 100%;
+
+    /*font-family: Calibri, serif;*/
+    /*font-size: 14pt;*/
+    margin: 15px 0 0 0;
+}
+
+#mapcontainer {
+    height: 100%;
+    margin: 0;
+}
+
+#mapid {
+    min-height: 100%;
+    background-color: black;
+}
+
+.leaflet-left {
+    left: 30%;
+}
+
+#leftsidebar{
+    height: 100%;
+    width: 30%;
+    opacity: 0.95;
+    /*top: 0;*/
+    left: 0;
+    background-color: #000000;
+    background-image: linear-gradient(#000000, #000000 30%, #1C3436);
+    position: absolute;
+    z-index: 10;
+    overflow-y: auto;
+}
+
+#split-bar {
+    background-color: black;
+    height: 100%;
+    /* float: right; */
+    width: 6px;
+    cursor: col-resize;
+    position: absolute;
+    right: 0px;
+}
+
+#banner {
+    background-image: url('/images/dummy.png');
+    width: 100%;
+    height: 150px;
+}
+
+.bdoMapIcon {
+
+}
+.zoom5 .bdoMapIcon {
+
+}
+
+/*.sidebar button {
+    border-radius: 4px;
+    background-color: white;
+    border: 1px solid;
+    padding: 5px 10px;
+    font-weight: bold;
+}*/
+
+
+.sidebarContent {
+    padding: 5px;
+}
+
+
+#layerToggle {
+    border-bottom: 1px double white;
+    border-top: 1px double white;
+    margin: 5px 0px;
+    min-height: 16px;
+}
+#hideLayerToggle {
+    float: right;
+    cursor: pointer;
+}
+.groupName {
+    /* display: inline; */
+}
+.layerCheckboxes {
+    /* display: inline; */
+    padding-left: 10%;
+}
+
+
+.formField {
+    padding-bottom: 10px;
+}
+.formField label {
+    min-width: 150px;
+    display: inline-block;
+}
+.formField textarea {
+    display: block;
+    min-width: 90%;
+}
+
+#information {
+    min-height: 200px;
+}
+.headline {
+    text-align: center;
+    font-size: 2em;
+}
+
+.imageInformation {
+    max-width: 100%;
+    opacity: 1;
+}
+
+
+.btn {
+    padding: 0.2em 0.8em;
+   /* border: 0 none; */
+}
+.bs-actionsbox {
+    min-width: 180px;
+}
+.navbar-xs { min-height:28px; }
+.navbar-xs .navbar-brand{ padding: 0px 12px;font-size: 16px;line-height: 28px; }
+.navbar-xs .navbar-nav > li > a {  padding-top: 0px; padding-bottom: 0px; line-height: 28px; }
+.navbar-xs .navbar-form {   margin-top: 0px;    margin-bottom: 0px; }
+.navbar-xs .navbar-brand { height: auto; }

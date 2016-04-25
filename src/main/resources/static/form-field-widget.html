@@ -1,0 +1,25 @@
+<div class="pull-right" data-bind="if: !required()">
+    <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
+</div>
+<div class="form-group">
+    <label class="control-label" data-bind="text: label, attr: {for:name}"></label>
+
+    <!--ko if: element() === "select" -->
+    <select class="form-control input-sm" data-bind="options: options, attr: {id:name}, value:value"></select>
+    <!--/ko-->
+
+    <!--ko if: element() === "input" && type() === "radio" -->
+    <div data-bind="foreach: options">
+        <input class="form-control input-sm" data-bind="checked: $parent.defaultvalue, attr: {id:$data, type:$parent.type, name:$data}, value:$data"/>
+        <label class="form-control" data-bind="text: $data, attr: {for:$data}"></label>
+    </div>
+    <!--/ko-->
+
+    <!--ko if: element() === "input" && type() !== "radio"  && type() !== "submit" -->
+    <input class="form-control input-sm" data-bind="attr: {id:name, type:type, placeholder:placeholder }, value:value, checked:value" />
+    <!--/ko-->
+
+    <!--ko if: element() === "textarea" -->
+    <textarea class="form-control input-sm" data-bind="attr: {id:name, placeholder:placeholder, value:value}, value:value"></textarea>
+    <!--/ko-->
+</div>

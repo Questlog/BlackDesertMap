@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <!-- <script data-main="app/main" src="js/require.js"></script> -->
+
+        <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js" ></script>
+
+
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.draw.js"></script>
+        <script src="js/viewmodel.js"></script>
+        <script src="js/bdomap.js"></script>
+        <script src="js/bootstrap-select.js"></script>
+        <script src="js/sidebarSplitter.js"></script>
+
+
+        <link rel="stylesheet" href="css/leaflet.css" />
+        <link rel="stylesheet" href="css/leaflet.draw.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/bootstrap-select.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top navbar-xs">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Solid-Core</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="form-group">
+                                <!-- ko foreach: {data: groups, as: 'group'} -->
+                                <select multiple="multiple" data-actions-box="true" data-selected-text-format="static" class="selectpicker" data-width="fit"
+                                        data-bind="attr: { id: 'g' + group.name, title: group.displayName }">
+                                    <!-- ko foreach: {data: group.types, as: 'typeName'} -->
+                                    <option selected="selected" data-icon="./images/markerIcons/firTree.png" data-bind="value: types[typeName].name"><!--ko text: types[typeName].displayNamePlural--><!--/ko--></option>
+                                    <!-- /ko -->
+                                </select>
+                                <!-- /ko -->
+                            </div>
+                        </form>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="mapcontainer">
+            <div id="leftsidebar" class="sidebar container">
+                <div id="split-bar"></div>
+                <div class="row">
+                    <div id="banner" class="col-lg-12"></div>
+                </div>
+                <div id="loginMode" class="sidebarContent" data-bind="visible: mode() == 'login', with: loginForm">
+                    <div class="headline">Login</div>
+                    <div class="formField">
+                        <label for="loginName">Name:</label>
+                        <input id="loginName" type="text" data-bind="value: name">
+                    </div>
+
+                    <div class="formField">
+                        <label for="loginPassword">Passwort:</label>
+                        <input id="loginPassword" type="password" data-bind="value: password">
+                    </div>
+                    <div data-bind="text: message"></div>
+
+                    <button class="btn btn-default" data-bind="click: login">Login</button>
+                    <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                </div>
+                <div id="registerMode" class="sidebarContent" data-bind="visible: mode() == 'register', with: registerForm">
+                    <div class="headline">Registrieren</div>
+                    <div data-bind="if: mode() == 'check'">
+                        <p>Schritt 1/4: Teamspeak ID eingeben.</p>
+                        <p>Die ID findet man unter <em>Einstellungen->Identitäten->Eindeutige ID</em></p>
+                        <p>Du musst mit dem Teamspeak Server verbunden sein.</p>
+                        <div class="formField">
+                            <label for="registerTs3id">Ts3ID:</label>
+                            <input id="registerTs3id" type="text" data-bind="value: ts3id">
+                        </div>
+                        <div data-bind="foreach: messages">
+                            <p><!--ko text: $data--><!-- /ko --></p>
+                        </div>
+                        <button class="btn btn-default" data-bind="click: check">ID Prüfen</button>
+                        <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                    </div>
+                    <div data-bind="if: mode() == 'sendToken'">
+                        <p>Schritt 2/4: Token.</p>
+                        <p>Ein Bot wird dir mit einer privaten Nachricht einen zufälligen Token zukommen lassen.
+                            Er besteht aus einigen zufälligen Buchstaben und Zahlen. Kopiere ihn für den nächsten Schritt.</p>
+                        <div data-bind="foreach: messages">
+                            <p><!--ko text: $data--><!-- /ko --></p>
+                        </div>
+                        <button class="btn btn-default" data-bind="click: sendToken">Token senden</button>
+                        <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                    </div>
+                    <div data-bind="if: mode() == 'validate'">
+                        <p>Schritt 3/4: Token eingeben.</p>
+                        <p>Den kopierten Token hier einfügen.</p>
+                        <div class="formField">
+                            <label for="registerToken">Token:</label>
+                            <input id="registerToken" type="text" data-bind="value: token">
+                        </div>
+                        <div data-bind="foreach: messages">
+                            <p><!--ko text: $data--><!-- /ko --></p>
+                        </div>
+                        <button class="btn btn-default" data-bind="click: validate">Token Prüfen</button>
+                        <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                    </div>
+                    <div data-bind="if: mode() == 'register'">
+                        <p>Schritt 4/4: Benutzerdaten angeben.</p>
+                        <div class="formField">
+                            <label for="registerName">Name:</label>
+                            <input id="registerName" type="text" data-bind="value: name">
+                        </div>
+                        <div class="formField">
+                            <label for="registerPassword">Passwort:</label>
+                            <input id="registerPassword" type="password" data-bind="value: password">
+                        </div>
+                        <div class="formField">
+                            <label for="registerPasswordRepeat">Wiederholen:</label>
+                            <input id="registerPasswordRepeat" type="password" data-bind="value: passwordconfirm">
+                        </div>
+                        <div data-bind="foreach: messages">
+                            <p><!--ko text: $data--><!-- /ko --></p>
+                        </div>
+                        <button class="btn btn-default" data-bind="click: register">Registrieren</button>
+                        <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                    </div>
+                    <div data-bind="if: mode() == 'done'">
+                        <p>Fertig!</p>
+                        <button class="btn btn-default" data-bind="click: cancel">Okay!</button>
+                    </div>
+                </div>
+                <div id="viewMode" class="sidebarContent container-fluid" data-bind="visible: mode() == 'view'">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button class="btn btn-default" data-bind="visible: !authenticated(), click: login">Login</button>
+                            <button class="btn btn-default" data-bind="visible: authenticated, click: logout">Logout</button>
+                            <button class="btn btn-default" data-bind="visible: !authenticated(), click: register">Registrieren</button>
+                            <button class="btn btn-default" id="createButton" data-bind="visible: authenticated, click: changeToCreate">Neue Markierung</button>
+                            <button class="btn btn-default" id="createButton2" data-bind="click: changeToCreate2">Neue Markierung 2</button>
+                        </div>
+                    </div>
+                    <div id="information" data-bind="if: selectedMapObj()">
+                        <div class="headline" data-bind="text: selectedType().displayName"></div>
+                        <div id="displayTreasureChest" data-bind="if: selectedType().name == 'treasureChest'">
+                            <div class="textInformation" data-bind="text: selectedMapObj().params.description"></div>
+                            <a data-bind="attr: { href: selectedMapObj().params.image}">
+                                <img class="imageInformation" data-bind="attr: { src: selectedMapObj().params.image}" />
+                            </a>
+                        </div>
+                        <div id="displayFishingSpot" data-bind="if: selectedType().name == 'fishingSpot'">
+                            <div class="textInformation" data-bind="text: selectedMapObj().params.description"></div>
+                            <a data-bind="attr: { href: selectedMapObj().params.image}">
+                                <img class="imageInformation" data-bind="attr: { src: selectedMapObj().params.image}" />
+                            </a>
+                        </div>
+                    </div>
+                    <button class="btn btn-default" id="editButton" data-bind="visible: selectedMapObj() && authenticated(), click: editLayer">Bearbeiten</button>
+                </div>
+                <div id="createMode2" class="sidebarContent row" data-bind="if: mode() === 'create2'">
+                    <form data-bind="with: createViewModel">
+                        <div class="form-group">
+                            <label class=" col-sm-2 control-label " for="newObjectType">Typ:</label>
+                            <select class="form-control input-sm" id="newObjectType" data-bind="foreach: $root.types, value: newObjTypeName, event: {change: changeNewObjType}" >
+                                <option data-bind="value: name"><!--ko text: displayName--><!--/ko--></option>
+                            </select>
+                        </div>
+
+                        <div data-bind="foreach: requiredFormFields">
+                            <formField params="$data" ></formField>
+                        </div>
+
+                        <div data-bind="foreach: formFields">
+
+                            <div class="pull-right" data-bind="if: !required()">
+                                <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" data-bind="text: label, attr: {for:name}"></label>
+
+                                <!--ko if: element() === "select" -->
+                                <select class="form-control input-sm" data-bind="options: options, attr: {id:name}, value:value"></select>
+                                <!--/ko-->
+
+                                <!--ko if: element() === "input" && type() === "radio" -->
+                                <div data-bind="foreach: options">
+                                    <input class="form-control input-sm" data-bind="checked: $parent.defaultvalue, attr: {id:$data, type:$parent.type, name:$data}, value:$data"/>
+                                    <label class="form-control" data-bind="text: $data, attr: {for:$data}"></label>
+                                </div>
+                                <!--/ko-->
+
+                                <!--ko if: element() === "input" && type() !== "radio"  && type() !== "submit" -->
+                                <input class="form-control input-sm" data-bind="attr: {id:name, type:type, placeholder:placeholder }, value:value, checked:value" />
+                                <!--/ko-->
+
+                                <!--ko if: element() === "textarea" -->
+                                <textarea class="form-control input-sm" data-bind="attr: {id:name, placeholder:placeholder, value:value}, value:value"></textarea>
+                                <!--/ko-->
+                            </div>
+                        </div>
+
+                        <div class="dropdown  form-group">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Element hinzufügen
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" data-bind="foreach: internalTypes">
+                                <li data-bind="click: $parent.addFormField"><a href="#" data-bind="text: $data.displayName"></a></li>
+                            </ul>
+                        </div>
+
+                        <div data-bind="with: newFormField">
+                            <div class="panel panel-default">
+                            <div class="panel-heading">Neues Element: <!-- ko text: type().displayName --><!-- /ko --></div>
+                                <div class="panel-body">
+                                    <div class="form-group"  data-bind="with: formField">
+                                        <label class="control-label">
+                                            Label
+                                            <input class="form-control input-sm" type="text" data-bind="value: label" />
+                                        </label>
+                                        <label class="control-label">
+                                            Platzhalter
+                                            <input class="form-control input-sm" type="text" data-bind="value: placeholder" />
+                                        </label>
+                                        <label class="control-label">
+                                            Standardwert
+                                            <input class="form-control input-sm" type="text" data-bind="value: value" />
+                                        </label>
+                                    </div>
+                                    <div class="btn-group" role="group" >
+                                        <button class="btn btn-primary" data-bind="click: save">Hinzufügen</button>
+                                        <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group form-group" role="group" >
+                            <button class="btn btn-primary" id="saveCreate" data-bind="click: save">Speichern</button>
+                            <button class="btn btn-default" id="cancelCreate" data-bind="click: cancel">Abbrechen</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="mapid"></div>
+        </div>
+    </body>
+</html>

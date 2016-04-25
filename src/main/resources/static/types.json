@@ -1,0 +1,744 @@
+{
+    "types": {
+        "treasureChest": {
+            "name" : "treasureChest",
+            "displayName": "Schatzkiste",
+            "displayNamePlural": "Schatzkisten",
+            "style": {
+                "color": "#000000",
+                "weight": 5,
+                "opacity": 0.65
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/chest.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "description",
+                    "label" : "Beschreibung",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "image",
+                    "label" : "Screenshot",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "horse" : {
+            "name" : "horse",
+            "displayName" : "Pferd",
+            "displayNamePlural" : "Pferde",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/horse.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "Placeholder": "",
+                    "Options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "description",
+                    "label" : "Beschreibung",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "Options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "fishingSpot" : {
+            "name" : "fishingSpot",
+            "displayName" : "Fishing Spot",
+            "displayNamePlural" : "Fishing Spots",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/fishingrod.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "Placeholder": "",
+                    "Options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "description",
+                    "label" : "Beschreibung",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "Options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+
+        "copperOre": {
+            "name" : "copperOre",
+            "displayName" : "Kupfererz",
+            "displayNamePlural" : "Kupfererze",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/copperOre.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "ironOre": {
+            "name" : "ironOre",
+            "displayName" : "Eisenerz",
+            "displayNamePlural" : "Eisenerze",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/ironOre.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "leadOre": {
+            "name" : "leadOre",
+            "displayName" : "Blei",
+            "displayNamePlural" : "Blei",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/leadOre.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "coal": {
+            "name" : "coal",
+            "displayName" : "Kohle",
+            "displayNamePlural" : "Kohle",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/coal.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "tinOre": {
+            "name" : "tinOre",
+            "displayName" : "Zinn",
+            "displayNamePlural" : "Zinn",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/tinOre.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "zinc": {
+            "name" : "zinc",
+            "displayName" : "Zink",
+            "displayNamePlural" : "Zink",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/zinc.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+
+        "silver": {
+            "name" : "silver",
+            "displayName" : "Silber",
+            "displayNamePlural" : "Silber",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/silver.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "gold": {
+            "name" : "gold",
+            "displayName" : "Gold",
+            "displayNamePlural" : "Gold",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/gold.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "platinum": {
+            "name" : "platinum",
+            "displayName" : "Platin",
+            "displayNamePlural" : "Platin",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/platinum.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "diamond": {
+            "name" : "diamond",
+            "displayName" : "Diamant",
+            "displayNamePlural" : "Diamanten",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/diamond.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "ruby": {
+            "name" : "ruby",
+            "displayName" : "Rubin",
+            "displayNamePlural" : "Rubine",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/ruby.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "sapphire": {
+            "name" : "sapphire",
+            "displayName" : "Saphir",
+            "displayNamePlural" : "Saphire",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/sapphire.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "topaz": {
+            "name" : "topaz",
+            "displayName" : "Topas",
+            "displayNamePlural" : "Topas",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/topaz.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                },
+                {
+                    "name" : "hints",
+                    "label" : "Hinweise",
+                    "element" : "input",
+                    "type" : "text",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": [],
+                    "defaultValue": ""
+                }
+            ]
+        },
+
+        "cedarTree": {
+            "name" : "cedarTree",
+            "displayName" : "Zeder",
+            "displayNamePlural" : "Zeder",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/cedarTree.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "mapleTree": {
+            "name" : "mapleTree",
+            "displayName" : "Ahorn",
+            "displayNamePlural" : "Ahorn",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/mapleTree.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "ashTree": {
+            "name" : "ashTree",
+            "displayName" : "Esche",
+            "displayNamePlural" : "Eschen",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/ashTree.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "birchTree": {
+            "name" : "birchTree",
+            "displayName" : "Birke",
+            "displayNamePlural" : "Birken",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/birchTree.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "pineTree": {
+            "name" : "pineTree",
+            "displayName" : "Pinien",
+            "displayNamePlural" : "Pinien",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/pineTree.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                }
+            ]
+        },
+        "firTree": {
+            "name" : "firTree",
+            "displayName" : "Tanne",
+            "displayNamePlural" : "Tannen",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/firTree.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": ""
+                }
+            ]
+        }
+    },
+    "groups" : {
+        "misc" : {
+            "name" : "misc",
+            "displayName" : "Allgemein",
+            "icon" : "",
+            "types" : [
+                "treasureChest",
+                "fishingSpot",
+                "horse"
+            ]
+        },
+        "ores" : {
+            "name" : "ores",
+            "displayName" : "Erze",
+            "icon" : "",
+            "types" : [
+                "copperOre",
+                "ironOre",
+                "leadOre",
+                "coal",
+                "tinOre",
+                "zinc",
+                "silver",
+                "gold",
+                "diamond",
+                "platinum",
+                "ruby",
+                "sapphire",
+                "topaz"
+            ]
+        },
+        "trees": {
+            "name" : "trees",
+            "displayName" : "Bäume",
+            "icon" : "",
+            "types" : [
+                "cedarTree",
+                "mapleTree",
+                "ashTree",
+                "birchTree",
+                "pineTree",
+                "firTree"
+
+            ]
+        },
+        "animals": {
+            "name" : "animals",
+            "displayName" : "Tiere",
+            "icon" : "",
+            "types" : []
+        },
+        "plants": {
+            "name" : "plants",
+            "displayName" : "Pflanzen",
+            "icon" : "",
+            "types" : []
+        }
+    }
+}
