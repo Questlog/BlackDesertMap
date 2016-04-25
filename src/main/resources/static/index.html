@@ -2,19 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <!-- <script data-main="app/main" src="js/require.js"></script> -->
 
         <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js" ></script>
 
 
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/leaflet.js"></script>
-        <script src="js/leaflet.draw.js"></script>
-        <script src="js/viewmodel.js"></script>
-        <script src="js/bdomap.js"></script>
-        <script src="js/bootstrap-select.js"></script>
-        <script src="js/sidebarSplitter.js"></script>
+         <script data-main="js/app/main" src="js/require.js"></script>
+        <!--<script src="js/bootstrap.min.js"></script>-->
+        <!--<script src="js/leaflet.js"></script>-->
+        <!--<script src="js/leaflet.draw.js"></script>-->
+        <!--<script src="js/viewmodel.js"></script>-->
+        <!--<script src="js/bdomap.js"></script>-->
+        <!--<script src="js/bootstrap-select.js"></script>-->
+        <!--<script src="js/sidebarSplitter.js"></script> -->
 
 
         <link rel="stylesheet" href="css/leaflet.css" />
@@ -40,7 +40,9 @@
                                 <select multiple="multiple" data-actions-box="true" data-selected-text-format="static" class="selectpicker" data-width="fit"
                                         data-bind="attr: { id: 'g' + group.name, title: group.displayName }">
                                     <!-- ko foreach: {data: group.types, as: 'typeName'} -->
-                                    <option selected="selected" data-icon="./images/markerIcons/firTree.png" data-bind="value: types[typeName].name"><!--ko text: types[typeName].displayNamePlural--><!--/ko--></option>
+                                    <option selected="selected" data-bind="value: $root.typeDict()[typeName].name">
+                                        <!--ko text: $root.typeDict()[typeName].displayNamePlural--><!--/ko-->
+                                    </option>
                                     <!-- /ko -->
                                 </select>
                                 <!-- /ko -->
@@ -143,8 +145,7 @@
                             <button class="btn btn-default" data-bind="visible: !authenticated(), click: login">Login</button>
                             <button class="btn btn-default" data-bind="visible: authenticated, click: logout">Logout</button>
                             <button class="btn btn-default" data-bind="visible: !authenticated(), click: register">Registrieren</button>
-                            <button class="btn btn-default" id="createButton" data-bind="visible: authenticated, click: changeToCreate">Neue Markierung</button>
-                            <button class="btn btn-default" id="createButton2" data-bind="click: changeToCreate2">Neue Markierung 2</button>
+                            <button class="btn btn-default" data-bind="click: changeToCreate2">Neue Markierung</button>
                         </div>
                     </div>
                     <div id="information" data-bind="if: selectedMapObj()">
@@ -164,7 +165,7 @@
                     </div>
                     <button class="btn btn-default" id="editButton" data-bind="visible: selectedMapObj() && authenticated(), click: editLayer">Bearbeiten</button>
                 </div>
-                <div id="createMode2" class="sidebarContent row" data-bind="if: mode() === 'create2'">
+                <div id="createMode" class="sidebarContent row" data-bind="if: mode() === 'create'">
                     <form data-bind="with: createViewModel">
                         <div class="form-group">
                             <label class=" col-sm-2 control-label " for="newObjectType">Typ:</label>
@@ -174,12 +175,12 @@
                         </div>
 
                         <div data-bind="foreach: requiredFormFields">
-                            <formField params="$data" ></formField>
+                            <form-field params="data: $data" ></form-field>
                         </div>
 
                         <div data-bind="foreach: formFields">
 
-                            <div class="pull-right" data-bind="if: !required()">
+                            <div class="pull-right" data-bind="if: optional">
                                 <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
                             </div>
                             <div class="form-group">
