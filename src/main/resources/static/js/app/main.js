@@ -3,9 +3,13 @@
  */
 require.config({
     shim : {
-        "leaflet" :         { "deps" :['jquery'] },
-        "leafletDraw" :     { "deps" :['leaflet'] },
-        "bootstrapSelect" : { "deps" :['bootstrap'] }
+        "leaflet" :               { "deps" :['jquery'] },
+
+        "leaflet-draw" :          { "deps" :['leaflet'] },
+        "leaflet-hash" :          { "deps" :['leaflet'] },
+        "leaflet-locationShare" : { "deps" :['leaflet'] },
+
+        "bootstrapSelect" :       { "deps" :['bootstrap'] }
     },
     baseUrl: '../js/app',
     paths: {
@@ -28,8 +32,14 @@ require.config({
             '//cdn.leafletjs.com/leaflet/v0.7.7/leaflet',
             '../lib/leaflet'
         ],
-        leafletDraw: [
+        "leaflet-draw": [
             '../lib/leaflet.draw'
+        ],
+        "leaflet-hash": [
+            '../lib/leaflet-hash'
+        ],
+        "leaflet-locationShare": [
+            '../lib/Leaflet.LocationShare'
         ],
         bootstrap: [
             '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
@@ -72,6 +82,15 @@ require([
             });
         }
     };
+
+    ko.bindingHandlers.selectpicker = {
+        init: function(element, valueAccessor) {
+            var data = valueAccessor();
+            var onChange = data.onChange;
+            $(element).selectpicker().on('changed.bs.select', onChange);
+        }
+    };
+
 
     ko.applyBindings(viewModel);
 

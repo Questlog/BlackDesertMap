@@ -145,11 +145,17 @@
                 <div id="createMode" class="sidebarContent row" data-bind="if: mode() === 'create'">
                     <form data-bind="with: createViewModel">
                         <div class="form-group">
-                            <label class=" col-sm-2 control-label " for="newObjectType">Typ:</label>
-                            <select class="form-control input-sm" id="newObjectType" data-bind="foreach: $root.types, value: newObjTypeName, event: {change: changeNewObjType}" >
-                                <option data-bind="value: name"><!--ko text: displayName--><!--/ko--></option>
+                            <label class="control-label">Typ
+                            </label>
+                            <select data-width="100%" class="selectpicker" id="newObjectType" data-bind="foreach: $root.groups, selectpicker: {onChange: changeNewObjType}" >
+                                <optgroup data-bind="attr: {label: displayName}, foreach: types">
+                                    <!-- ko with: $root.getType($data) -->
+                                    <option data-bind="text: displayName, value: name"></option>
+                                    <!-- /ko -->
+                                </optgroup>
                             </select>
                         </div>
+
                         <div data-bind="template:{ name: 'formFieldsEditorTmpl', data: formFieldsEditor }"></div>
 
                         <div class="btn-group form-group" role="group" >
@@ -262,12 +268,14 @@
 
             <script id="defaultFieldTmpl" type="text/html">
                 <div class="row">
-                    <!-- ko text: label --><!-- /ko -->&nbsp;<!-- ko text: value --><!-- /ko -->
+                    <h4 data-bind="visible: label.length > 0, text: label"></h4>
+                    <p data-bind="text: value"></p>
                 </div>
             </script>
 
             <script id="checkboxFieldTmpl" type="text/html">
                 <div class="row">
+                    <p>
                     <!-- ko text: label --><!-- /ko -->:
                     <!-- ko if: value -->
                         <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
@@ -275,6 +283,7 @@
                     <!-- ko ifnot: value -->
                         <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
                     <!-- /ko -->
+                    </p>
                 </div>
             </script>
         </div>

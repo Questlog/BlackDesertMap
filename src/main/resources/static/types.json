@@ -50,6 +50,33 @@
                 }
             ]
         },
+        "note": {
+            "name" : "note",
+            "displayName": "Notiz",
+            "displayNamePlural": "Notizen",
+            "style": {
+                "color": "#000000",
+                "weight": 5,
+                "opacity": 0.65
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/note.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": "",
+                    "optional": false
+                }
+            ]
+        },
         "horse" : {
             "name" : "horse",
             "displayName" : "Pferd",
@@ -731,7 +758,8 @@
             "types" : [
                 "treasureChest",
                 "fishingSpot",
-                "horse"
+                "horse",
+                "note"
             ]
         },
         "ores" : {

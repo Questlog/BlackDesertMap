@@ -4,9 +4,11 @@
 define('bdomap', [
     'jquery',
     'leaflet',
-    'leafletDraw',    
+    'leaflet-draw',
+    'leaflet-hash',
+    'leaflet-locationShare',
     'domReady!'
-], function($, L, leafletDraw, domReady) {
+], function($, L, leafletDraw, hash, location, domReady) {
 
     var bdomap;
     var drawnItems;
@@ -46,6 +48,7 @@ define('bdomap', [
 //                )
     });
 
+    var hash = new L.Hash(bdomap);
 
     // $.each(layerGroups, function(e){
     //     bdomap.addLayer(layerGroups[e]);

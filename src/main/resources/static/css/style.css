@@ -70,16 +70,6 @@ html, body {
 }
 
 
-#layerToggle {
-    border-bottom: 1px double white;
-    border-top: 1px double white;
-    margin: 5px 0px;
-    min-height: 16px;
-}
-#hideLayerToggle {
-    float: right;
-    cursor: pointer;
-}
 .groupName {
     /* display: inline; */
 }
@@ -87,8 +77,6 @@ html, body {
     /* display: inline; */
     padding-left: 10%;
 }
-
-
 .formField {
     padding-bottom: 10px;
 }
@@ -109,10 +97,6 @@ html, body {
     font-size: 2em;
 }
 
-.imageInformation {
-    max-width: 100%;
-    opacity: 1;
-}
 
 
 .btn {

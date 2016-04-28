@@ -37,86 +37,12 @@ define('viewModel', [
         self.editViewModel      = ko.observable();
         self.layerViewer        = ko.observable();
 
-        self.fixDB              = function(){
-            $.each(bdomap.drawnItems.getLayers(), function(i, item){
-                console.log(item);
-                var params = item.bdoMapObj.params;
-                var newParams = [];
-
-                for (var key in params) {
-                    if (p.hasOwnProperty(key)) {
-                        alert(key + " -> " + params[key]);
-                        var name = key;
-                        var value = params[key];
-                        var dataObj = {};
-                        
-                        if(name == 'authRequired'){
-                            dataObj = {
-                                "name" : "authRequired",
-                                "label" : "Benötigt login",
-                                "element" : "input",
-                                "type" : "checkbox",
-                                "value" : "",
-                                "placeholder": "",
-                                "options": ["authRequired"],
-                                "defaultValue": "",
-                                "optional": false
-                            }
-                        } else if(name == 'description') {
-                            dataObj = {
-                                "name" : "description",
-                                "label" : "Beschreibung",
-                                "element" : "input",
-                                "type" : "text",
-                                "value" : "",
-                                "placeholder": "",
-                                "options": [],
-                                "defaultValue": "",
-                                "optional": true
-                            }
-                        } else if(name == 'hints') {
-                            dataObj = {
-                                "name" : "hints",
-                                "label" : "Hinweise",
-                                "element" : "input",
-                                "type" : "text",
-                                "value" : "",
-                                "placeholder": "",
-                                "options": [],
-                                "defaultValue": "",
-                                "optional": true
-                            }
-                        } else if(name == 'hints') {
-                            dataObj = {
-                                "name" : "image",
-                                "label" : "Screenshot",
-                                "element" : "input",
-                                "type" : "text",
-                                "value" : "",
-                                "placeholder": "",
-                                "options": [],
-                                "defaultValue": "",
-                                "optional": true,
-                                "internalType": "screenshot"
-                            }
-                        }
-
-                        dataObj.value = value;
-
-                        newParams.push(dataObj);
-                    }
-                }
-
-                item.bdoMapObj.params = newParams;
-                helper.updateGeoJsonOfLayer(item);
-                helper.saveMapObjToDatabase(item.bdoMapObj, false, function(){});
-            });
-        };
-
         self.login = function(){
             self.loginForm(new LoginForm(function(authOk){
-                self.authenticated(true);
-                location.reload(); //TODO make this not necessary
+                self.authenticated(authOk);
+                if(authOk)
+                    location.reload(); //TODO make this not necessary
+                self.mode('view');
             }));
             self.mode('login');
         };

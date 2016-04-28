@@ -11,8 +11,6 @@ define('loginViewModel', [
         self.authenticated = ko.observable(false);
 
         self.cancel = function(){
-            //TODO callback now
-            //viewModel.mode('view');
             callback(false);
         };
         self.login = function(){
