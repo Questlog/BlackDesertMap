@@ -103,7 +103,7 @@ define('viewModel', [
 
                         dataObj.value = value;
 
-                        newParams.add(dataObj);
+                        newParams.push(dataObj);
                     }
                 }
 
