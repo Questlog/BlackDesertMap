@@ -59,6 +59,7 @@
                 <div class="row">
                     <div id="banner" class="col-lg-12"></div>
                 </div>
+                <button data-bind="click: fixDB">FixDb</button>
                 <div id="loginMode" class="sidebarContent" data-bind="visible: mode() == 'login', with: loginForm">
                     <div class="headline">Login</div>
                     <div class="formField">
@@ -145,25 +146,14 @@
                             <button class="btn btn-default" data-bind="visible: !authenticated(), click: login">Login</button>
                             <button class="btn btn-default" data-bind="visible: authenticated, click: logout">Logout</button>
                             <button class="btn btn-default" data-bind="visible: !authenticated(), click: register">Registrieren</button>
-                            <button class="btn btn-default" data-bind="click: changeToCreate2">Neue Markierung</button>
+                            <button class="btn btn-default" data-bind="click: changeToCreate">Neue Markierung</button>
                         </div>
                     </div>
-                    <div id="information" data-bind="if: selectedMapObj()">
-                        <div class="headline" data-bind="text: selectedType().displayName"></div>
-                        <div id="displayTreasureChest" data-bind="if: selectedType().name == 'treasureChest'">
-                            <div class="textInformation" data-bind="text: selectedMapObj().params.description"></div>
-                            <a data-bind="attr: { href: selectedMapObj().params.image}">
-                                <img class="imageInformation" data-bind="attr: { src: selectedMapObj().params.image}" />
-                            </a>
-                        </div>
-                        <div id="displayFishingSpot" data-bind="if: selectedType().name == 'fishingSpot'">
-                            <div class="textInformation" data-bind="text: selectedMapObj().params.description"></div>
-                            <a data-bind="attr: { href: selectedMapObj().params.image}">
-                                <img class="imageInformation" data-bind="attr: { src: selectedMapObj().params.image}" />
-                            </a>
-                        </div>
+                    <div id="information" data-bind="with: layerViewer">
+                        <div class="headline" data-bind="text: type().displayName"></div>
+                        <button class="btn btn-default" id="editButton" data-bind="visible: $root.authenticated(), click: $root.editLayer">Bearbeiten</button>
+                        <div data-bind="template: { name: 'fieldViewerTmpl', foreach: fields }"></div>
                     </div>
-                    <button class="btn btn-default" id="editButton" data-bind="visible: selectedMapObj() && authenticated(), click: editLayer">Bearbeiten</button>
                 </div>
                 <div id="createMode" class="sidebarContent row" data-bind="if: mode() === 'create'">
                     <form data-bind="with: createViewModel">
@@ -173,75 +163,7 @@
                                 <option data-bind="value: name"><!--ko text: displayName--><!--/ko--></option>
                             </select>
                         </div>
-
-                        <div data-bind="foreach: requiredFormFields">
-                            <form-field params="data: $data" ></form-field>
-                        </div>
-
-                        <div data-bind="foreach: formFields">
-
-                            <div class="pull-right" data-bind="if: optional">
-                                <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" data-bind="text: label, attr: {for:name}"></label>
-
-                                <!--ko if: element() === "select" -->
-                                <select class="form-control input-sm" data-bind="options: options, attr: {id:name}, value:value"></select>
-                                <!--/ko-->
-
-                                <!--ko if: element() === "input" && type() === "radio" -->
-                                <div data-bind="foreach: options">
-                                    <input class="form-control input-sm" data-bind="checked: $parent.defaultvalue, attr: {id:$data, type:$parent.type, name:$data}, value:$data"/>
-                                    <label class="form-control" data-bind="text: $data, attr: {for:$data}"></label>
-                                </div>
-                                <!--/ko-->
-
-                                <!--ko if: element() === "input" && type() !== "radio"  && type() !== "submit" -->
-                                <input class="form-control input-sm" data-bind="attr: {id:name, type:type, placeholder:placeholder }, value:value, checked:value" />
-                                <!--/ko-->
-
-                                <!--ko if: element() === "textarea" -->
-                                <textarea class="form-control input-sm" data-bind="attr: {id:name, placeholder:placeholder, value:value}, value:value"></textarea>
-                                <!--/ko-->
-                            </div>
-                        </div>
-
-                        <div class="dropdown  form-group">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Element hinzufügen
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" data-bind="foreach: internalTypes">
-                                <li data-bind="click: $parent.addFormField"><a href="#" data-bind="text: $data.displayName"></a></li>
-                            </ul>
-                        </div>
-
-                        <div data-bind="with: newFormField">
-                            <div class="panel panel-default">
-                            <div class="panel-heading">Neues Element: <!-- ko text: type().displayName --><!-- /ko --></div>
-                                <div class="panel-body">
-                                    <div class="form-group"  data-bind="with: formField">
-                                        <label class="control-label">
-                                            Label
-                                            <input class="form-control input-sm" type="text" data-bind="value: label" />
-                                        </label>
-                                        <label class="control-label">
-                                            Platzhalter
-                                            <input class="form-control input-sm" type="text" data-bind="value: placeholder" />
-                                        </label>
-                                        <label class="control-label">
-                                            Standardwert
-                                            <input class="form-control input-sm" type="text" data-bind="value: value" />
-                                        </label>
-                                    </div>
-                                    <div class="btn-group" role="group" >
-                                        <button class="btn btn-primary" data-bind="click: save">Hinzufügen</button>
-                                        <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-bind="template:{ name: 'formFieldsEditorTmpl', data: formFieldsEditor }"></div>
 
                         <div class="btn-group form-group" role="group" >
                             <button class="btn btn-primary" id="saveCreate" data-bind="click: save">Speichern</button>
@@ -249,9 +171,114 @@
                         </div>
                     </form>
                 </div>
+                <div id="editMode" class="sidebarContent row" data-bind="if: mode() === 'edit'">
+                    <form data-bind="with: editViewModel">
+                        <div data-bind="template:{ name: 'formFieldsEditorTmpl', data: formFieldsEditor }"></div>
+
+                        <div class="btn-group form-group" role="group" >
+                            <button class="btn btn-primary" data-bind="click: save">Speichern</button>
+                            <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
 
             <div id="mapid"></div>
+
+            <script id="formFieldTmpl" type="text/html">
+                <div class="draggableItem">
+                    <div class="pull-right" data-bind="if: optional">
+                        <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-bind="text: label, attr: {for:name}"></label>
+
+                        <!--ko if: element() === "select" -->
+                        <select class="form-control input-sm" data-bind="options: options, attr: {id:name}, value:value"></select>
+                        <!--/ko-->
+
+                        <!--ko if: element() === "input" && type() === "radio" -->
+                        <div data-bind="foreach: options">
+                            <input class="form-control input-sm" data-bind="checked: $parent.defaultvalue, attr: {id:$data, type:$parent.type, name:$data}, value:$data"/>
+                            <label class="form-control" data-bind="text: $data, attr: {for:$data}"></label>
+                        </div>
+                        <!--/ko-->
+
+                        <!--ko if: element() === "input" && type() !== "radio"  && type() !== "submit" -->
+                        <input class="form-control input-sm" data-bind="attr: {id:name, type:type, placeholder:placeholder }, value:value, checked:value" />
+                        <!--/ko-->
+
+                        <!--ko if: element() === "textarea" -->
+                        <textarea class="form-control input-sm" data-bind="attr: {id:name, placeholder:placeholder, value:value}, value:value"></textarea>
+                        <!--/ko-->
+                    </div>
+                </div>
+            </script>
+
+            <script id="formFieldsEditorTmpl" type="text/html">
+                <div data-bind="template: { name: 'formFieldTmpl', foreach: requiredFormFields}"></div>
+
+                <div data-bind="template: { name: 'formFieldTmpl', foreach: formFields}, sortableList: formFields"></div>
+
+                <div class="dropdown  form-group">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Element hinzufügen
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" data-bind="foreach: internalTypes">
+                        <li data-bind="click: $parent.addFormField"><a href="#" data-bind="text: $data.displayName"></a></li>
+                    </ul>
+                </div>
+
+                <div data-bind="with: newFormField">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Neues Element: <!-- ko text: type().displayName --><!-- /ko --></div>
+                        <div class="panel-body">
+                            <div class="form-group"  data-bind="with: formField">
+                                <label class="control-label">
+                                    Label
+                                    <input class="form-control input-sm" type="text" data-bind="value: label" />
+                                </label>
+                                <label class="control-label">
+                                    Platzhalter
+                                    <input class="form-control input-sm" type="text" data-bind="value: placeholder" />
+                                </label>
+                                <label class="control-label">
+                                    Standardwert
+                                    <input class="form-control input-sm" type="text" data-bind="value: value" />
+                                </label>
+                            </div>
+                            <div class="btn-group" role="group" >
+                                <button class="btn btn-primary" data-bind="click: save">Hinzufügen</button>
+                                <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </script>
+
+            <script id="fieldViewerTmpl" type="text/html">
+                <div class="dataField">
+                    <div data-bind="template: $parent.getFieldTemplate($data)"></div>
+                </div>
+            </script>
+
+            <script id="screenshotFieldTmpl" type="text/html">
+                <div data-bind="text: label"></div>
+                <a data-bind="attr: { href: value}">
+                    <img class="imageInformation" data-bind="attr: { src: value}" />
+                </a>
+            </script>
+
+            <script id="defaultFieldTmpl" type="text/html">
+                <!-- ko text: label --><!-- /ko -->&nbsp;<!-- ko text: value --><!-- /ko -->
+            </script>
+
+            <script id="checkboxFieldTmpl" type="text/html">
+                <!-- ko text: label --><!-- /ko -->: <!-- ko text: value --><!-- /ko -->
+
+            </script>
         </div>
     </body>
 </html>

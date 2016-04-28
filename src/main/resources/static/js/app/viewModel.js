@@ -9,8 +9,9 @@ define('viewModel', [
     'loginViewModel',
     'registerViewModel',
     'createViewModel',
-    'formField'
-], function($, ko, bdomap, helper, LoginForm, RegisterForm, CreateViewModel, FormField) {
+    'editViewModel',
+    'layerViewerViewModel'
+], function($, ko, bdomap, helper, LoginForm, RegisterForm, CreateViewModel, EditViewModel, LayerViewer) {
 
     var viewModel = function() {
         var self = this;
@@ -26,18 +27,91 @@ define('viewModel', [
         self.selectedMapObj     = ko.observable();
         self.selectedType       = ko.observable();
 
-        self.editingLayer       = ko.observable();
-        self.editingType        = ko.observable();
-        self.editingMapObj      = ko.observable();
-
         self.newObjTypeName     = ko.observable();
         self.createdLayer       = ko.observable();
         self.drawControlVisible = ko.observable(false);
 
-        self.formFields         = ko.observableArray();
         self.loginForm          = ko.observable();
         self.registerForm       = ko.observable();
         self.createViewModel    = ko.observable();
+        self.editViewModel      = ko.observable();
+        self.layerViewer        = ko.observable();
+
+        self.fixDB              = function(){
+            $.each(bdomap.drawnItems.getLayers(), function(i, item){
+                console.log(item);
+                var params = item.bdoMapObj.params;
+                var newParams = [];
+
+                for (var key in params) {
+                    if (p.hasOwnProperty(key)) {
+                        alert(key + " -> " + params[key]);
+                        var name = key;
+                        var value = params[key];
+                        var dataObj = {};
+                        
+                        if(name == 'authRequired'){
+                            dataObj = {
+                                "name" : "authRequired",
+                                "label" : "Benötigt login",
+                                "element" : "input",
+                                "type" : "checkbox",
+                                "value" : "",
+                                "placeholder": "",
+                                "options": ["authRequired"],
+                                "defaultValue": "",
+                                "optional": false
+                            }
+                        } else if(name == 'description') {
+                            dataObj = {
+                                "name" : "description",
+                                "label" : "Beschreibung",
+                                "element" : "input",
+                                "type" : "text",
+                                "value" : "",
+                                "placeholder": "",
+                                "options": [],
+                                "defaultValue": "",
+                                "optional": true
+                            }
+                        } else if(name == 'hints') {
+                            dataObj = {
+                                "name" : "hints",
+                                "label" : "Hinweise",
+                                "element" : "input",
+                                "type" : "text",
+                                "value" : "",
+                                "placeholder": "",
+                                "options": [],
+                                "defaultValue": "",
+                                "optional": true
+                            }
+                        } else if(name == 'hints') {
+                            dataObj = {
+                                "name" : "image",
+                                "label" : "Screenshot",
+                                "element" : "input",
+                                "type" : "text",
+                                "value" : "",
+                                "placeholder": "",
+                                "options": [],
+                                "defaultValue": "",
+                                "optional": true,
+                                "internalType": "screenshot"
+                            }
+                        }
+
+                        dataObj.value = value;
+
+                        newParams.add(dataObj);
+                    }
+                }
+
+                item.bdoMapObj.params = newParams;
+                helper.updateGeoJsonOfLayer(item);
+                helper.saveMapObjToDatabase(item.bdoMapObj, false, function(){});
+            });
+        };
 
         self.login = function(){
             self.loginForm(new LoginForm(function(authOk){
@@ -96,27 +170,16 @@ define('viewModel', [
             self.selectedLayer (layer);
             self.selectedType(types[layer.bdoMapObj.type]);
             self.selectedMapObj (layer.bdoMapObj);
+
+            self.layerViewer(new LayerViewer(self, layer));
         };
         self.clearSelection = function(){
             self.selectedMapObj(null);
             self.selectedLayer(null);
             self.selectedType(null);
-        };
 
 
-
-        self.createFormViewModel = function(type, mapObj){
-            self.formFields(ko.utils.arrayMap(type.dataFields, function(item) {
-
-                var formField = new FormField(item);
-                if(mapObj != undefined){
-                    if(item.name in mapObj.params){
-                        formField.value(mapObj.params[item.name]);
-                    }
-                }
-
-                return formField;
-            }));
+            self.layerViewer(null);
         };
 
         self.changeToCreate = function(){
@@ -132,111 +195,41 @@ define('viewModel', [
                 bdomap.map.removeLayer(self.createdLayer());
             self.createdLayer(null);
         };
-        self.saveCreate = function(){
-            var typeName = self.newObjTypeName();
-            if (typeName == '' || typeName == null){
-                alert('Vor dem Speichern muss ein Typ ausgewählt sein.');
-                return;
-            }
-            var layer = self.createdLayer();
-            if (layer == null){
-                alert('Vor dem Speichern muss eine Markierung mit einem der Tools (linker Rand der Karte) erstellt werden.');
-                return;
-            }
-
-            var type = types[typeName];
-
-            helper.saveLayerToDatabase(self, layer, type, function(data){
-                bdomap.drawnItems.removeLayer(layer);
-                var mapObj = JSON.parse(data);
-                helper.addDatabaseObject(self, mapObj);
-            });
-
-            self.createdLayer(null);
-            self.mode('view');
-            self.hideDrawControl();
-        };
 
 
         //Editing
         self.editLayer = function(){
             self.createdLayer(null);
-            var targetLayer = self.selectedLayer();
-            var mapObj = self.selectedMapObj();
-            var type = self.selectedType();
-            self.editingLayer(targetLayer);
-            self.editingMapObj(mapObj);
-            self.editingType(type);
+            self.editViewModel(new EditViewModel(self, self.selectedLayer()));
             self.mode('edit');
+            self.editViewModel().enable();
+        };        
 
-            self.createFormViewModel(type, mapObj);
-            targetLayer.editing.enable();
-        };
-        self.cancelEdit = function(){
-            self.mode('view');
-            var layer = self.editingLayer();
-            layer.editing.disable();
-            self.clearSelection();
-            helper.reloadLayer(layer, function(layer){
-                self.selectLayer(layer);
-            });
-            self.hideDrawControl();
-        };
-        self.saveEdit = function () {
-            self.mode('view');
-
-            var layer = self.editingLayer();
-            self.removeLayer(layer);
-
+        bdomap.map.on('draw:created', function (e) {
             if(self.createdLayer()){
-                var mapObj = layer.bdoMapObj;
-                layer = self.createdLayer();
-                layer.bdoMapObj = mapObj;
-                self.removeLayer(layer);
+                helper.removeLayer(self.createdLayer());
+                self.createdLayer(null);
             }
+            var layer = e.layer;
+            self.createdLayer(layer);
+            //viewModel.hideDrawControl();
+            bdomap.drawnItems.addLayer(layer);
+            layer.editing.enable();
+        });
 
-            var type = self.editingType();
-            layer.editing.disable();
-            self.clearSelection();
-            self.hideDrawControl();            
-            helper.saveLayerToDatabase(layer, type.name, function(){
-                self.reloadLayer(layer, function(layer){
-                    self.selectLayer(layer);
-                });
-            });
-        };
-        self.deleteEdit = function () {
-            var confirmed = confirm("Diese Markierung löschen?");
-            if(!confirmed)
-                return;
-            if(self.createdLayer()){
-                self.removeLayer(self.createdLayer());
-            }
-
-            var layer = self.editingLayer();
-            var mapObj = self.editingMapObj();
-            var type = self.editingType();
-            helper.removeLayer(layer);
-            self.clearSelection();
-            self.hideDrawControl();
-            self.mode("view");
-            $.ajax({
-                type: "DELETE",
-                url: "/mapobj/" + type.name,
-                contentType: "application/json",
-                data: JSON.stringify(mapObj)
-            });
-        };
-        self.redrawEdit = function(){
-            if(self.createdLayer()){
-                self.removeLayer(self.createdLayer());
-            }
-            self.createdLayer(null);
-            self.showDrawControl();
-            //removeLayer(self.editingLayer());
-        }
+        bdomap.map.on('zoomend', function(event) {
+            $("#mapcontainer").removeClass (function (index, css) {
+                return (css.match (/(^|\s)zoom\S+/g) || []).join(' ');
+            }).addClass("zoom" + bdomap.map.getZoom());
+        });
 
     };
+
+
+
+
+
+
 
     return new viewModel();
 });

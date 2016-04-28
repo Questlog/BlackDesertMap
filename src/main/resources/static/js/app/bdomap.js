@@ -4,10 +4,9 @@
 define('bdomap', [
     'jquery',
     'leaflet',
-    'leafletDraw',
-    'viewModel',
+    'leafletDraw',    
     'domReady!'
-], function($, L, leafletDraw, viewModel, domReady) {
+], function($, L, leafletDraw, domReady) {
 
     var bdomap;
     var drawnItems;
@@ -155,26 +154,6 @@ define('bdomap', [
     //bdomap.addControl(new L.Control.Draw(editControl(drawnItems)));
     //bdomap.addControl(drawControl);
 
-    bdomap.on('draw:created', function (e) {
-        if(viewModel.createdLayer()){
-            removeLayer(viewModel.createdLayer());
-            viewModel.createdLayer(null);
-        }
-        var layer = e.layer;
-        viewModel.createdLayer(layer);
-        //viewModel.hideDrawControl();
-        drawnItems.addLayer(layer);
-        layer.editing.enable();
-    });
-
-
-    bdomap.on('zoomend', function(event) {
-        $("#mapcontainer").removeClass (function (index, css) {
-            return (css.match (/(^|\s)zoom\S+/g) || []).join(' ');
-        });
-
-        $("#mapcontainer").addClass("zoom" + bdomap.getZoom());
-    });
     
     
     return {

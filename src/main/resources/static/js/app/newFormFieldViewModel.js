@@ -11,6 +11,7 @@ define('newFormFieldViewModel', [
         formFieldData.name = internalType.name;
         formFieldData.label = internalType.displayName;
         formFieldData.placeholder = internalType.displayName;
+        formFieldData.value = "";
 
         if(internalType.name === "screenshot") {
             formFieldData.element = "input";
@@ -23,9 +24,6 @@ define('newFormFieldViewModel', [
             formFieldData.element = "input";
             formFieldData.type = "text";
         }
-
-
-        console.log(formFieldData);
 
         self.type = ko.observable(internalType);
         self.formField = ko.observable(new FormField(formFieldData));

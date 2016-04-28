@@ -14,6 +14,10 @@ require.config({
             '//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min',
             '../lib/jquery-2.2.2.min'
         ],
+        "jquery-ui": [
+            '../lib/jquery-ui.min',
+            '../lib/jquery-ui'
+        ],
         domReady: [
             '//cdnjs.cloudflare.com/ajax/libs/require-domReady/2.0.1/domReady'
         ],
@@ -42,16 +46,39 @@ require.config({
 
 require([
     'jquery',
+    'jquery-ui',
     'knockout',
     'viewModel',
     'domReady!',
     'helperFunctions'
-], function($, ko, viewModel, dom, helper) {
+], function($, ui, ko, viewModel, dom, helper) {
 
     ko.components.register('form-field', {
         viewModel: { require: 'formField' },
         template: { require: 'text!widgets/form-field-widget.html' }
     });
+
+    ko.bindingHandlers.sortableList = {
+        init: function(element, valueAccessor) {
+            var list = valueAccessor();
+            $(element).sortable({
+                update: function(event, ui) {
+                    //retrieve our actual data item
+                    console.log(ui.item);
+                    var item = ko.dataFor(ui.item[0]);
+                    //figure out its new position
+                    var position = ko.utils.arrayIndexOf(ui.item.parent().children(), ui.item[0]);
+                    console.log(item);
+                    //remove the item and add it back in the right spot
+                    if (position >= 0) {
+                        list.remove(item);
+                        list.splice(position, 0, item);
+                    }
+                    ui.item.remove();
+                }
+            });
+        }
+    };
 
     ko.applyBindings(viewModel);
 

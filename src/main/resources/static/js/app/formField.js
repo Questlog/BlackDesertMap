@@ -1,10 +1,7 @@
 define('formField', [
-    'jquery',
     'knockout'
-], function($, ko) {
+], function(ko) {
     return function (data) {
-        if(data.data) //knockout can't bind the data directly for components
-            data = data.data;
         var self            =   this;
         self.name           =   ko.observable(data.name).extend({required:true});
         self.element        =   ko.observable(data.element);                        // Can be: input, textarea, button, select
