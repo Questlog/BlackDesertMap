@@ -3,7 +3,6 @@
  */
 require.config({
     shim : {
-        //"bootstrap" :       { "deps" :['jquery'] },
         "leaflet" :         { "deps" :['jquery'] },
         "leafletDraw" :     { "deps" :['leaflet'] },
         "bootstrapSelect" : { "deps" :['bootstrap'] }
@@ -22,24 +21,23 @@ require.config({
             '//cdnjs.cloudflare.com/ajax/libs/require-domReady/2.0.1/domReady'
         ],
         knockout: [
+            '//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min',
             '../lib/knockout-debug'
         ],
         leaflet: [
+            '//cdn.leafletjs.com/leaflet/v0.7.7/leaflet',
             '../lib/leaflet'
         ],
         leafletDraw: [
             '../lib/leaflet.draw'
         ],
         bootstrap: [
-            'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
+            '//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min',
             '../lib/bootstrap.min',
             '../lib/bootstrap'
         ],
         bootstrapSelect: [
             '../lib/bootstrap-select'
-        ],
-        text: [
-            '../lib/text'
         ]
     }
 });
@@ -53,12 +51,7 @@ require([
     'helperFunctions'
 ], function($, ui, ko, viewModel, dom, helper) {
 
-    ko.components.register('form-field', {
-        viewModel: { require: 'formField' },
-        template: { require: 'text!widgets/form-field-widget.html' }
-    });
-
-    ko.bindingHandlers.sortableList = {
+      ko.bindingHandlers.sortableList = {
         init: function(element, valueAccessor) {
             var list = valueAccessor();
             $(element).sortable({

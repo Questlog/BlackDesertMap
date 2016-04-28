@@ -41,14 +41,14 @@ define('helperFunctions', [
             if(formObj.name === "authRequired")
                 mapObj.authRequired = formObj.value;
         });
-
-        mapObj.jsonParams = JSON.stringify(mapObj.params);
     }
     function saveMapObjToDatabase(mapObj, isNew, callback) {        
 
         var method = "PUT";
         if (isNew)
             method = "POST";
+
+        mapObj.jsonParams = JSON.stringify(mapObj.params);
 
         $.ajax({
             type: method,

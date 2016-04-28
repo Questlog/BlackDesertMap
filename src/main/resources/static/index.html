@@ -2,20 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-
-        <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js" ></script>
-
-
-         <script data-main="js/app/main" src="js/require.js"></script>
-        <!--<script src="js/bootstrap.min.js"></script>-->
-        <!--<script src="js/leaflet.js"></script>-->
-        <!--<script src="js/leaflet.draw.js"></script>-->
-        <!--<script src="js/viewmodel.js"></script>-->
-        <!--<script src="js/bdomap.js"></script>-->
-        <!--<script src="js/bootstrap-select.js"></script>-->
-        <!--<script src="js/sidebarSplitter.js"></script> -->
-
+        <script data-main="js/app/main" src="js/lib/require.js"></script>
 
         <link rel="stylesheet" href="css/leaflet.css" />
         <link rel="stylesheet" href="css/leaflet.draw.css">
@@ -54,12 +41,11 @@
             </div>
         </nav>
         <div id="mapcontainer">
-            <div id="leftsidebar" class="sidebar container">
+            <div id="leftsidebar" class="sidebar container-fluid">
                 <div id="split-bar"></div>
                 <div class="row">
                     <div id="banner" class="col-lg-12"></div>
                 </div>
-                <button data-bind="click: fixDB">FixDb</button>
                 <div id="loginMode" class="sidebarContent" data-bind="visible: mode() == 'login', with: loginForm">
                     <div class="headline">Login</div>
                     <div class="formField">
@@ -141,16 +127,17 @@
                     </div>
                 </div>
                 <div id="viewMode" class="sidebarContent container-fluid" data-bind="visible: mode() == 'view'">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <button class="btn btn-default" data-bind="visible: !authenticated(), click: login">Login</button>
-                            <button class="btn btn-default" data-bind="visible: authenticated, click: logout">Logout</button>
-                            <button class="btn btn-default" data-bind="visible: !authenticated(), click: register">Registrieren</button>
-                            <button class="btn btn-default" data-bind="click: changeToCreate">Neue Markierung</button>
-                        </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" data-bind="visible: !authenticated(), click: login">Login</button>
+                        <button class="btn btn-default" data-bind="visible: !authenticated(), click: register">Registrieren</button>
                     </div>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" data-bind="visible: authenticated, click: logout">Logout</button>
+                        <button class="btn btn-default" data-bind="visible: authenticated, click: changeToCreate">Neue Markierung</button>
+                    </div>
+
                     <div id="information" data-bind="with: layerViewer">
-                        <div class="headline" data-bind="text: type().displayName"></div>
+                        <h1 class="headline" data-bind="text: type().displayName"></h1>
                         <button class="btn btn-default" id="editButton" data-bind="visible: $root.authenticated(), click: $root.editLayer">Bearbeiten</button>
                         <div data-bind="template: { name: 'fieldViewerTmpl', foreach: fields }"></div>
                     </div>
@@ -259,25 +246,36 @@
             </script>
 
             <script id="fieldViewerTmpl" type="text/html">
-                <div class="dataField">
-                    <div data-bind="template: $parent.getFieldTemplate($data)"></div>
-                </div>
+                <div class="container-fluid" data-bind="template: $parent.getFieldTemplate($data)"></div>
             </script>
 
             <script id="screenshotFieldTmpl" type="text/html">
-                <div data-bind="text: label"></div>
-                <a data-bind="attr: { href: value}">
-                    <img class="imageInformation" data-bind="attr: { src: value}" />
-                </a>
+                <div class="row">
+                    <div data-bind="text: label"></div>
+                    <!-- ko if: $data.value -->
+                    <a data-bind="attr: { href: value}">
+                        <img class="imageInformation" data-bind="attr: { src: value}" />
+                    </a>
+                    <!-- /ko -->
+                </div>
             </script>
 
             <script id="defaultFieldTmpl" type="text/html">
-                <!-- ko text: label --><!-- /ko -->&nbsp;<!-- ko text: value --><!-- /ko -->
+                <div class="row">
+                    <!-- ko text: label --><!-- /ko -->&nbsp;<!-- ko text: value --><!-- /ko -->
+                </div>
             </script>
 
             <script id="checkboxFieldTmpl" type="text/html">
-                <!-- ko text: label --><!-- /ko -->: <!-- ko text: value --><!-- /ko -->
-
+                <div class="row">
+                    <!-- ko text: label --><!-- /ko -->:
+                    <!-- ko if: value -->
+                        <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                    <!-- /ko -->
+                    <!-- ko ifnot: value -->
+                        <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+                    <!-- /ko -->
+                </div>
             </script>
         </div>
     </body>
