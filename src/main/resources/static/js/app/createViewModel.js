@@ -10,7 +10,7 @@ define('createViewModel', [
     return function (viewModel) {
         var self = this;
 
-        self.newObjTypeName = ko.observable();
+        self.newObjTypeName = ko.observable(viewModel.types()[0].name);
         self.formFieldsEditor = ko.observable(new FormFieldsEditor(viewModel));
         
         self.changeNewObjType = function (event) {

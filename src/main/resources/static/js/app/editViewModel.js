@@ -42,7 +42,7 @@ define('editViewModel', [
 
             var layer = self.layer();
             var mapObj = layer.bdoMapObj;
-            var typeName = mapObj.type; //TODO rename bdoMapObj.type to typeName
+            var typeName = mapObj.type; 
             helper.removeLayer(layer);
             viewModel.clearSelection();
             viewModel.hideDrawControl();

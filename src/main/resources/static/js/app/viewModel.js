@@ -1,6 +1,3 @@
-/**
- * Created by Benni on 24.04.2016.
- */
 define('viewModel', [
     'jquery',
     'knockout',
@@ -24,8 +21,6 @@ define('viewModel', [
         self.groups             = ko.observableArray([]);
 
         self.selectedLayer      = ko.observable();
-        self.selectedMapObj     = ko.observable();
-        self.selectedType       = ko.observable();
 
         self.newObjTypeName     = ko.observable();
         self.createdLayer       = ko.observable();
@@ -94,17 +89,10 @@ define('viewModel', [
         //Viewing
         self.selectLayer = function(layer){
             self.selectedLayer (layer);
-            self.selectedType(types[layer.bdoMapObj.type]);
-            self.selectedMapObj (layer.bdoMapObj);
-
             self.layerViewer(new LayerViewer(self, layer));
         };
         self.clearSelection = function(){
-            self.selectedMapObj(null);
             self.selectedLayer(null);
-            self.selectedType(null);
-
-
             self.layerViewer(null);
         };
 
@@ -143,7 +131,7 @@ define('viewModel', [
             layer.editing.enable();
         });
 
-        bdomap.map.on('zoomend', function(event) {
+        bdomap.map.on('zoomend', function() {
             $("#mapcontainer").removeClass (function (index, css) {
                 return (css.match (/(^|\s)zoom\S+/g) || []).join(' ');
             }).addClass("zoom" + bdomap.map.getZoom());
