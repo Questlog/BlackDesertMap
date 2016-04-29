@@ -22,7 +22,6 @@ define('viewModel', [
 
         self.selectedLayer      = ko.observable();
 
-        self.newObjTypeName     = ko.observable();
         self.createdLayer       = ko.observable();
         self.drawControlVisible = ko.observable(false);
 
@@ -41,14 +40,17 @@ define('viewModel', [
             }));
             self.mode('login');
         };
+
         self.logout = function(){
             $.post("/auth/logout");
             self.authenticated(false);
         };
+
         self.register = function(){
             self.registerForm(new RegisterForm(self));
             self.mode('register');
         };
+
         self.getType = function(typeName){
             return self.typeDict()[typeName];
         };
@@ -62,6 +64,7 @@ define('viewModel', [
             }
             return true;
         };
+
         self.setLayerVisibility = function(layerName, visible){
             var layerGroup = bdomap.layerGroups[layerName];
             var hasLayer = bdomap.map.hasLayer(layerGroup);
@@ -79,6 +82,7 @@ define('viewModel', [
                 self.drawControlVisible(true);
             }
         };
+
         self.hideDrawControl = function(){
             if(self.drawControlVisible()){
                 bdomap.map.removeControl(bdomap.drawControl);
@@ -91,6 +95,7 @@ define('viewModel', [
             self.selectedLayer (layer);
             self.layerViewer(new LayerViewer(self, layer));
         };
+
         self.clearSelection = function(){
             self.selectedLayer(null);
             self.layerViewer(null);
@@ -102,14 +107,6 @@ define('viewModel', [
             self.createdLayer(null);
             self.mode('create');
         };
-        self.cancelCreate = function(){
-            self.mode('view');
-            self.hideDrawControl();
-            if (self.createdLayer() != null)
-                bdomap.map.removeLayer(self.createdLayer());
-            self.createdLayer(null);
-        };
-
 
         //Editing
         self.editLayer = function(){
@@ -136,14 +133,7 @@ define('viewModel', [
                 return (css.match (/(^|\s)zoom\S+/g) || []).join(' ');
             }).addClass("zoom" + bdomap.map.getZoom());
         });
-
     };
-
-
-
-
-
-
 
     return new viewModel();
 });
