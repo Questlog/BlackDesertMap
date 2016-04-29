@@ -14,7 +14,6 @@ define('layerViewerViewModel', [
             if(data.internalType) {
                 type = data.internalType;
             }
-            console.log(data);
             if(data.name === 'authRequired' && type === 'checkbox')
                 return "";
             if(type === 'screenshot')
