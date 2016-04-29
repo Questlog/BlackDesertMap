@@ -32,7 +32,7 @@ define('editViewModel', [
             viewModel.createdLayer(null);
             viewModel.showDrawControl();
         };
-        self.delete = function(){
+        self.remove = function(){
             var confirmed = confirm("Diese Markierung löschen?");
             if(!confirmed)
                 return;

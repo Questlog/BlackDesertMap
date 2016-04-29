@@ -61,7 +61,14 @@ require([
     'helperFunctions'
 ], function($, ui, ko, viewModel, dom, helper) {
 
-      ko.bindingHandlers.sortableList = {
+    if(window.location.port === "4567"){
+        alert("Die Adresse worfox.net:4567 ist alt, du wirst jetzt auf bdomap.worfox.net weitergeleitet.");
+        window.location = "http://bdomap.worfox.net";
+    }
+        
+
+
+    ko.bindingHandlers.sortableList = {
         init: function(element, valueAccessor) {
             var list = valueAccessor();
             $(element).sortable({

@@ -138,7 +138,7 @@ define('viewModel', [
             }
             var layer = e.layer;
             self.createdLayer(layer);
-            //viewModel.hideDrawControl();
+            //self.hideDrawControl();
             bdomap.drawnItems.addLayer(layer);
             layer.editing.enable();
         });

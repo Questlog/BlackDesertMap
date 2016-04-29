@@ -170,6 +170,8 @@
 
                         <div class="btn-group form-group" role="group" >
                             <button class="btn btn-primary" data-bind="click: save">Speichern</button>
+                            <button class="btn btn-default" data-bind="click: redraw, attr: {disabled: $root.drawControlVisible}">Neu zeichnen</button>
+                            <button class="btn btn-default" data-bind="click: remove">Löschen</button>
                             <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
                         </div>
                     </form>
