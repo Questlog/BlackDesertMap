@@ -43,9 +43,7 @@
         <div id="mapcontainer">
             <div id="leftsidebar" class="sidebar container-fluid">
                 <div id="split-bar"></div>
-                <div class="row">
-                    <div id="banner" class="col-lg-12"></div>
-                </div>
+                <!--<div class="row"><div id="banner" class="col-lg-12"></div></div>-->
                 <div id="loginMode" class="sidebarContent" data-bind="visible: mode() == 'login', with: loginForm">
                     <div class="headline">Login</div>
                     <div class="formField">
@@ -265,6 +263,12 @@
                         <img class="img-responsive" data-bind="attr: { src: value}" />
                     </a>
                     <!-- /ko -->
+                </div>
+            </script>
+
+            <script id="linkFieldTmpl" type="text/html">
+                <div class="row">
+                    <a data-bind="attr:{href:value}"><h4 data-bind="text: label"></h4></a>
                 </div>
             </script>
 

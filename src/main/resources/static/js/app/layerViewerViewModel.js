@@ -20,6 +20,10 @@ define('layerViewerViewModel', [
                 return "screenshotFieldTmpl";
             if(type === 'checkbox')
                 return "checkboxFieldTmpl";
+            if(type === 'link')
+                return "linkFieldTmpl";
+
+
             return "defaultFieldTmpl";
         };
     };

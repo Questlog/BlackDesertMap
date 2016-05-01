@@ -20,7 +20,10 @@ define('newFormFieldViewModel', [
             formFieldData.element = "input";
             formFieldData.type = "checkbox";
             formFieldData.options = [internalType.name];
-        }  else if (internalType.name === "text") {
+        } else if (internalType.name === "text") {
+            formFieldData.element = "input";
+            formFieldData.type = "text";
+        } else if (internalType.name === "link") {
             formFieldData.element = "input";
             formFieldData.type = "text";
         }

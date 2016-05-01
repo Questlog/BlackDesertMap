@@ -11,7 +11,8 @@ define('formFieldsEditorViewModel', [
         self.internalTypes = ko.observableArray([
             {"name": "text", "displayName": "Text"},
             {"name": "checkbox", "displayName": "Checkbox"},
-            {"name": "screenshot", "displayName": "Screenshot"}
+            {"name": "screenshot", "displayName": "Screenshot"},
+            {"name": "link", "displayName": "Link"}
         ]);
 
 
