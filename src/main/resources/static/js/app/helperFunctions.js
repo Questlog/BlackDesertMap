@@ -11,7 +11,7 @@ define('helperFunctions', [
 
     function updateGeoJsonOfLayer(layer){
         var shape = layer.toGeoJSON();
-        var geojson = JSON.stringify(shape);
+        var geojson = shape;
         var mapObj = layer.bdoMapObj;
         mapObj.geojson = geojson;
     }
@@ -47,8 +47,6 @@ define('helperFunctions', [
         var method = "PUT";
         if (isNew)
             method = "POST";
-
-        mapObj.jsonParams = JSON.stringify(mapObj.params);
 
         $.ajax({
             type: method,
@@ -93,7 +91,7 @@ define('helperFunctions', [
     }
 
     function addDatabaseObject(viewModel, mapObj) {
-        var geoJson = JSON.parse(mapObj.geojson);
+        var geoJson = mapObj.geojson;
         var typename = mapObj.type;
 
         //Add geojson to drawnItems to be editable
@@ -134,6 +132,7 @@ define('helperFunctions', [
             //layer.bindPopup(layer.bdoMapObj.type);
             layer.on('click', function () {
                 viewModel.selectLayer(layer);
+                console.log(layer);
             });
         }
     }

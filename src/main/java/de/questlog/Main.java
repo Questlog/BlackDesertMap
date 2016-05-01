@@ -1,40 +1,35 @@
 package de.questlog;
 
+import com.google.gson.*;
+import de.questlog.tables.Marker;
+import de.questlog.tables.User;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
-import org.eclipse.jetty.util.log.Log;
+import org.bson.Document;
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
 
-/**
- * Created by Benni on 19.03.2016.
- */
 public class Main implements java.io.Closeable {
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
     private Ts3Service ts3;
     private WebService web;
+    private Transactions transactions;
 
     private Thread ts3Thread;
     private Thread webThread;
 
-    private EntityManagerFactory factory;
-    private EntityManager entityManager;
 
     public static void main(String[] args) throws InterruptedException, IOException {
         LOGGER.debug("Hello World!");
 
         try (Main m = new Main()) {
             m.start();
+            //m.exportMarkersToJsonFile("markers.json");
+            //m.exportUsersToJsonFile("users.json");
             while (true)
                 Thread.sleep(10);
         } catch (Exception e) {
@@ -51,12 +46,8 @@ public class Main implements java.io.Closeable {
             LOGGER.info("Initializing Teamspeak Service");
             ts3 = new Ts3Service();
 
-            LOGGER.info("Initializing Persistence");
-            factory = Persistence.createEntityManagerFactory("h2-eclipselink");
-            entityManager = factory.createEntityManager();
-
             LOGGER.info("Initializing Webservice");
-            Transactions transactions = new Transactions(factory);
+            transactions = new Transactions();
             web = new WebService(transactions, rootPath, ts3);
 
             LOGGER.info("Initializing done");
@@ -96,6 +87,7 @@ public class Main implements java.io.Closeable {
         }
     }
 
+
     private void start() throws Exception{
         Thread Ts3Thread = new Thread(ts3);
         Thread WebThread = new Thread(web);
@@ -109,13 +101,54 @@ public class Main implements java.io.Closeable {
 
     @Override
     public void close() throws IOException {
-        LOGGER.info("Shutting down, closing persistence");
-        if (entityManager != null) {
-            entityManager.close();
+        LOGGER.info("Shutting down");
+    }
+
+    /*public void exportUsersToJsonFile(String filename) throws IOException {
+        List<User> users = transactions.getAllUsers();
+        Gson gson = new Gson();
+
+        String userStr = gson.toJson(users);
+
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filename), "utf-8"))) {
+            writer.write(userStr);
         }
-        if (factory != null) {
-            factory.close();
+    }*/
+
+    public void exportMarkersToJsonFile(String filename) throws IOException {
+        List<Document> markerList = transactions.getMarkers(true);
+        Gson gson = new Gson();
+        JsonParser parser = new JsonParser();
+        JsonElement markers = gson.toJsonTree(markerList);
+
+        JsonArray markersArray = markers.getAsJsonArray();
+        for(JsonElement e: markersArray){
+            JsonObject marker = e.getAsJsonObject();
+
+            String geojsonstr = marker.get("geojson").getAsString();
+            JsonElement geojson = parser.parse(geojsonstr).getAsJsonObject();
+            marker.add("geojson", geojson);
+
+            try {
+                String paramsStr = marker.get("jsonParams").getAsString();
+                JsonArray params = parser.parse(paramsStr).getAsJsonArray();
+                marker.add("params", params);
+            } catch (IllegalStateException ex){
+                LOGGER.debug(marker.get("id") + " has invalid jsonParams");
+            }
+
+            marker.remove("jsonParams");
         }
+
+        String markerStr = gson.toJson(markers);
+
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filename), "utf-8"))) {
+            writer.write(markerStr);
+        }
+
+
     }
 
     private static String getRootPath(){

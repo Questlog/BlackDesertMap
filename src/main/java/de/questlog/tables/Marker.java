@@ -1,28 +1,16 @@
 package de.questlog.tables;
 
-import javax.persistence.*;
-import java.util.List;
-import java.util.Map;
-
-/**
- * Created by Benni on 20.03.2016.
- */
-@Entity
-@Table(name = "MARKERS")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Marker {
     private int id;
     private String type = "default";
     private Boolean authRequired;
-    private String geojson;
-    private String jsonParams;
+    private Object geojson;
+    private Object params;
 
 //    @Transient
 //    private Map<String, String> params;
 
-    @Id
-    @Column(name = "M_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     public int getId() {
         return id;
     }
@@ -30,8 +18,6 @@ public class Marker {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "TYPE")
     public String getType() {
         return type;
     }
@@ -39,8 +25,6 @@ public class Marker {
         this.type = type;
     }
 
-    @Basic
-    @Column(name = "AUTH_REQUIRED")
     public Boolean getAuthRequired() {
         return authRequired;
     }
@@ -48,31 +32,20 @@ public class Marker {
         this.authRequired = authRequired;
     }
 
-    @Basic
-    @Column(name = "GEOJSON")
-    public String getGeojson() {
+    public Object getGeojson() {
         return geojson;
     }
-    public void setGeojson(String geojson) {
+    public void setGeojson(Object geojson) {
         this.geojson = geojson;
     }
 
-    @Basic
-    @Column(name = "PARAMS")
-    public String getJsonParams() {
-        return jsonParams;
+    public Object getJsonParams() {
+        return params;
     }
-    public void setJsonParams(String JsonParams) {
-        this.jsonParams = JsonParams;
+    public void setJsonParams(Object JsonParams) {
+        this.params = params;
     }
 
-
-//    public void setParams(Map<String, String> params) {
-//        this.params = params;
-//    }
-//    public Map<String, String> getParams() {
-//        return params;
-//    }
 
     @Override
     public boolean equals(Object o) {

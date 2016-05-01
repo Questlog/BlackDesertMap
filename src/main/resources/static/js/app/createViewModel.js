@@ -22,6 +22,9 @@ define('createViewModel', [
         };
 
         self.cancel = function () {
+            viewModel.hideDrawControl();
+            if(viewModel.createdLayer())
+                helper.removeLayer(viewModel.createdLayer());
             viewModel.mode("view");
         };
 
@@ -46,7 +49,8 @@ define('createViewModel', [
             helper.saveMapObjToDatabase(mapObj, true, function(data){
                 helper.removeLayer(layer);
                 var mapObj = JSON.parse(data);
-                helper.addDatabaseObject(viewModel, mapObj);
+                var newLayer = helper.addDatabaseObject(viewModel, mapObj);
+                viewModel.selectLayer(newLayer);
             });
 
             viewModel.createdLayer(null);

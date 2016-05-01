@@ -1,173 +1,206 @@
 package de.questlog;
 
-import de.questlog.tables.Marker;
-import de.questlog.tables.User;
+import com.mongodb.*;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
+import java.util.*;
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.or;
 
-/**
- * Created by Benni on 20.03.2016.
- */
+
 public class Transactions {
-    private EntityManagerFactory factory;
     private static final Logger LOGGER = LogManager.getLogger(Transactions.class);
+    private MongoClient mongoClient;
+    private MongoDatabase db;
+    private MongoCollection<Document> userCollection;
+    private MongoCollection<Document> markerCollection;
 
 
-    public class TransactionException extends Exception {}
+    public class TransactionException extends RuntimeException {}
     public class DoesAlreadyExist extends TransactionException {}
     public class NotFound extends TransactionException {}
 
-    public Transactions(EntityManagerFactory factory) {
-        this.factory = factory;
-        EntityManager em = factory.createEntityManager();
-        //em.setFlushMode(FlushModeType.COMMIT);
+    public Transactions(){
+        this("bdomap");
     }
 
-    public List<Marker> getMarkers(boolean isAuthenticated) {
+    public Transactions(String database) {
+        mongoClient = new MongoClient();
+        db = mongoClient.getDatabase(database);
+        userCollection = db.getCollection("users");
+        markerCollection = db.getCollection("markers");
+    }
+
+    public Transactions(MongoClient mongoClient, MongoDatabase db){
+        this.mongoClient = mongoClient;
+        this.db = db;
+        userCollection = db.getCollection("users");
+        markerCollection = db.getCollection("markers");
+    }
+
+    public List<Document> getMarkers(boolean isAuthenticated) {
         return getMarkers(isAuthenticated, null, null);
     }
-    public List<Marker> getMarkers(boolean isAuthenticated, String type) {
+    public List<Document> getMarkers(boolean isAuthenticated, String type) {
         return getMarkers(isAuthenticated, type, null);
     }
-    public List<Marker> getMarkers(boolean isAuthenticated, String type, Integer id) {
-        EntityManager entityManager = factory.createEntityManager();
+    public List<Document> getMarkers(boolean isAuthenticated, String type, String id) {
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Marker> cq = cb.createQuery(Marker.class);
-        Root<Marker> marker = cq.from(Marker.class);
-        List<Predicate> predicates = new ArrayList<Predicate>();
+        Document query = new Document();
 
-        if(!isAuthenticated)
-            predicates.add(cb.equal(marker.get("authRequired"), false));
-
+        if(!isAuthenticated){
+            query.append("params.name", "authRequired");
+            query.append("$or",
+                    Arrays.asList(
+                            new Document("params.value", false),
+                            new Document("params.value", "")
+                    )
+            );
+        }
         if(type != null)
-            predicates.add(cb.like(marker.get("type"), type));
-
+            query.append("type", type);
         if(id != null)
-            predicates.add(cb.equal(marker.get("id"), id));
+            query.append("_id", new ObjectId(id));
 
-        cq.select(marker).where(predicates.toArray(new Predicate[]{}));
-        return entityManager.createQuery(cq).getResultList();
+        query.append("$or",
+                Arrays.asList(
+                        new Document("deleted", new Document("$exists", false)),
+                        new Document("deleted", false)
+                )
+        );
 
-        /*//the old fashioned way
-        TypedQuery<Marker> nq;
-        if(isAuthenticated)
-            nq = entityManager.createNamedQuery("getAllMarkers", Marker.class);
-        else
-            nq = entityManager.createNamedQuery("getPublicMarkers", Marker.class);
+        List<Document> markers = markerCollection.aggregate(Collections.singletonList(new Document("$match", query))).into(new ArrayList<Document>());
 
-        return nq.getResultList();
-        */
+        //List<Document> markers = markerCollection.find(query).into(new ArrayList<Document>());
+
+        for(Document m : markers){
+            String _id = m.getObjectId("_id").toHexString();
+            m.remove("_id");
+            m.append("id", _id);
+        }
+
+        return markers;
     }
 
-    public User addNewUser(User u) throws DoesAlreadyExist {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-
-        TypedQuery<User> nq = em.createNamedQuery("findUserByName", User.class);
-        nq.setParameter("username", u.getUsername());
-
-        if(nq.getResultList().size() > 0)
-            throw new DoesAlreadyExist();
-
-        em.persist(u);
-
-        em.getTransaction().commit();
-
-        return u;
-    }
-
-    public User findUserByTs3ID(String ts3id){
-        EntityManager em = factory.createEntityManager();
-
-        TypedQuery<User> nq = em.createNamedQuery("findUserByTs3ID", User.class);
-        nq.setParameter("ts3id", ts3id);
-
+    public Document addNewMarker(String json, String userId, String username) throws DoesAlreadyExist {
         try {
-            return nq.getSingleResult();
-        } catch (NoResultException e) {
+            Document marker = Document.parse(json);
+            Document audit = new Document();
+            audit.append("createdBy", new Document("userid", userId).append("username", username));
+            audit.append("createdAt", new Date());
+            marker.append("audit", audit);
+            markerCollection.insertOne(marker);
+            String id = marker.getObjectId("_id").toHexString();
+            marker.remove("_id");
+            marker.append("id", id);
+            return marker;
+        } catch (MongoWriteException e) {
+            LOGGER.debug(e);
             return null;
         }
     }
 
-    public User updateUser(User u) throws NotFound, DoesAlreadyExist {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
+    public Document updateMarker(String json, String userId, String username)  {
+        try {
+            Document marker = Document.parse(json);
+            ObjectId id = new ObjectId(marker.getString("id"));
+            marker.remove("id");
 
-        TypedQuery<User> nq = em.createNamedQuery("findUserByName", User.class);
-        nq.setParameter("username", u.getUsername());
+            updateModifyAudit(marker, userId, username);
 
-        if(nq.getResultList().size() > 0)
+            markerCollection.replaceOne(eq("_id", id), marker);
+
+            marker.append("id", id.toHexString());
+
+            return marker;
+        } catch (MongoWriteException e) {
+            LOGGER.debug(e);
+        }
+        return null;
+    }
+
+    public void deleteMarker(String json, String userId, String username)  {
+        Document marker = Document.parse(json);
+        ObjectId id = new ObjectId(marker.getString("id"));
+        updateModifyAudit(marker, userId, username);
+        marker.append("deleted", true);
+        markerCollection.replaceOne(eq("_id", id), marker);
+    }
+    public boolean userExists(String usernameOrTs3Id){
+        return userExists(usernameOrTs3Id, null);
+    }
+    public boolean userExists(String usernameOrTs3Id, String passwordHash){
+        Bson query = or (
+                        eq("username", usernameOrTs3Id),
+                        eq("ts3id", usernameOrTs3Id)
+                );
+        if(passwordHash != null)
+            query = and(query, eq("password", passwordHash));
+
+        FindIterable<Document> users = userCollection.find(query);
+
+        return users.first() != null;
+    }
+
+    public Document addNewUser(String ts3id, String username, String password) throws DoesAlreadyExist {
+        Document user = new Document("username", username);
+        user.append("password", password);
+        user.append("ts3id", ts3id);
+        user.append("createdAt", new Date());
+
+        try {
+            userCollection.insertOne(user);
+        }catch (MongoWriteException e){
             throw new DoesAlreadyExist();
+        }
 
-         nq = em.createNamedQuery("findUserByTs3ID", User.class);
-        nq.setParameter("ts3id", u.getTs3id());
-        List<User> resultList = nq.getResultList();
+        return user;
+    }
 
-        if(resultList.size() <= 0)
+
+    public boolean updateUser(String ts3id, String username, String password) throws NotFound, DoesAlreadyExist {
+        Document user = new Document();
+        if(username != null)
+            user.append("username", username);
+        if(password != null)
+            user.append("password", password);
+
+        try {
+            userCollection.updateOne(new Document("ts3id", ts3id), new Document("$set", user).append("$currentDate", new Document("modifiedAt", true)));
+        }catch (MongoWriteException e){
+            LOGGER.debug(e);
+            throw new DoesAlreadyExist();
+        }
+
+        return true;
+    }
+
+
+    private void updateModifyAudit(Document doc, String userId, String username){
+
+        Document audit = doc.get("audit", Document.class);
+        if(audit == null)
+            audit = new Document();
+        audit.append("modifiedAt", new Date());
+        audit.append("modifiedBy", new Document("userid", userId).append("username", username));
+        doc.append("audit", audit);
+    }
+
+    public String getUserId(String username) throws NotFound{
+
+        Document user = userCollection.find(new Document("username", username)).first();
+        if(user == null)
             throw new NotFound();
-        User f = resultList.get(0);
-        u.setId(f.getId());
-
-        em.merge(u);
-
-        em.getTransaction().commit();
-        return u;
+        return user.getObjectId("_id").toHexString();
     }
 
-    public User findUser(String nickname, String passwordhash) {
-        if(nickname == null || passwordhash == null)
-            return null;
-
-        EntityManager em = factory.createEntityManager();
-
-        TypedQuery<User> nq = em.createNamedQuery("checkPassword", User.class);
-        nq.setParameter("username", nickname);
-        nq.setParameter("password_hash", passwordhash);
-
-        try {
-            return nq.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    public Marker addNewMarker(Marker m) throws DoesAlreadyExist {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-        LOGGER.info("new marker");
-
-        em.persist(m);
-
-        em.getTransaction().commit();
-
-        return m;
-    }
-
-    public void updateMarker(Marker m)  {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-
-        em.merge(m);
-
-        em.getTransaction().commit();
-    }
-
-    public void deleteMarker(Marker m)  {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-
-        Marker toRemove = em.merge(m);
-        em.remove(toRemove);
-
-        em.getTransaction().commit();
-    }
 }

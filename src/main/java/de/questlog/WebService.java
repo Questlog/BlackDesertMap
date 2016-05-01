@@ -3,10 +3,9 @@ package de.questlog;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import de.questlog.tables.Marker;
-import de.questlog.tables.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bson.Document;
 import org.ini4j.Ini;
 import spark.Request;
 import spark.Response;
@@ -19,11 +18,9 @@ import org.apache.commons.codec.binary.Hex;
 
 import java.util.*;
 
+import static org.apache.commons.lang3.StringUtils.substring;
 import static spark.Spark.*;
 
-/**
- * Created by Benni on 19.03.2016.
- */
 public class WebService implements Service {
     private static final Logger LOGGER = LogManager.getLogger(WebService.class);
 
@@ -92,14 +89,16 @@ public class WebService implements Service {
 
     private JsonElement login (Request req, Response res) {
         Session session = req.session(true);
+
+        /*
+        //login without user/pass, just teamspeak auth
         Boolean validated = session.attribute("validated");
         String id = session.attribute("id");
-
-        //login without user/pass, just teamspeak auth
         if(validated != null && validated && id != null){
             session.attribute("authenticated", true);
             return status("ok");
         }
+        */
 
         String name = req.queryParams("name");
         String pass = req.queryParams("password");
@@ -107,9 +106,12 @@ public class WebService implements Service {
         if(isNullOrEmpty(name) || isNullOrEmpty(pass))
             return status("MissingParameter");
 
-        User u = tr.findUser(name, getHash(pass));
-        if(u != null){
+        boolean exists = tr.userExists(name, getHash(pass));
+        if(exists){
             session.attribute("authenticated", true);
+            session.attribute("username", name);
+            String userId = tr.getUserId(name);
+            session.attribute("userId", userId);
             return status("ok");
         } else {
             return status("userNotFound");
@@ -163,19 +165,11 @@ public class WebService implements Service {
         if(inputIsOk){
             String encryptedString = getHash(password);
 
-            boolean newUser = false;
-            User u = tr.findUserByTs3ID(id);
-            if(u == null){
-                newUser = true;
-                u = new User();
-            }
-            u.setUsername(name);
-            u.setPassword(encryptedString);
-            u.setTs3id(id);
+            boolean userExists = tr.userExists(id);
 
-            if(newUser){
+            if(!userExists){
                 try{
-                    tr.addNewUser(u);
+                    tr.addNewUser(id, name, encryptedString);
                     LOGGER.info("New User:\tID: " + id + " name: " + name );
                     status.add("ok");
                 } catch (Transactions.DoesAlreadyExist e){
@@ -184,7 +178,7 @@ public class WebService implements Service {
                 }
             } else {
                 try {
-                    tr.updateUser(u);
+                    tr.updateUser(id, name, encryptedString);
                     LOGGER.info("Update User:\tID: " + id + " name: " + name);
                     status.add("ok");
                 } catch (Transactions.NotFound ignored) {}
@@ -392,13 +386,8 @@ public class WebService implements Service {
         if(authenticated == null)
             authenticated = false;
 
-        String type = null;
-        if(req.params(":type") != null)
-            type = req.params(":type");
-
-        Integer id = null;
-        if(req.params(":id") != null)
-            id = Integer.parseInt(req.params(":id"));
+        String type = req.params(":type");
+        String id = req.params(":id");
 
         return gson.toJson(tr.getMarkers(authenticated, type, id));
     }
@@ -406,13 +395,16 @@ public class WebService implements Service {
     private String postMapObj(Request req, Response res) {
         if(req.params(":type") == null)
             return "missing parameter";
-        Marker m = gson.fromJson(req.body(), Marker.class);
-        if (m.getGeojson() == null)
+        String marker = req.body();
+        if (isNullOrEmpty(marker))
             return "missing parameter";
 
+        String username = req.session().attribute("username");
+        String userId = req.session().attribute("userId");
+
         try{
-            LOGGER.debug("New Marker: " + req.body());
-            tr.addNewMarker(m);
+            LOGGER.debug("New Marker by " + username + "(" + userId + "): " + substring(marker, 0, 200));
+            Document m = tr.addNewMarker(marker, username, userId);
             return gson.toJson(m);
         } catch (Transactions.TransactionException e) {
             return e.getClass().getSimpleName();
@@ -422,22 +414,32 @@ public class WebService implements Service {
     private String putMapObj(Request req, Response res){
         if(req.params(":type") == null)
             return "missing parameter";
-        Marker m = gson.fromJson(req.body(), Marker.class);
-        if (m.getGeojson() == null)
+        String marker = req.body();
+        if (isNullOrEmpty(marker))
             return "missing parameter";
-        LOGGER.debug("Update Marker: " + req.body());
-        tr.updateMarker(m);
+
+        String username = req.session().attribute("username");
+        String userId = req.session().attribute("userId");
+
+        LOGGER.debug("Update Marker by " + username + "(" + userId + "): " + substring(marker, 0, 200));
+
+        tr.updateMarker(marker, username, userId);
         return "ok";
     }
 
     private String deleteMapObj(Request req, Response res) {
-        if (req.params(":type") == null)
+        if (req.params(":type") == null) //TODO remove type parameter
             return "missing parameter";
-        Marker m = gson.fromJson(req.body(), Marker.class);
-        if (m.getGeojson() == null)
+        String marker = req.body();
+        if (isNullOrEmpty(marker))
             return "missing parameter";
-        LOGGER.debug("Remove Marker: " + req.body());
-        tr.deleteMarker(m);
+
+        String username = req.session().attribute("username");
+        String userId = req.session().attribute("userId");
+
+        LOGGER.debug("Remove Marker by " + username + "(" + userId + "): " + substring(marker, 0, 200));
+
+        tr.deleteMarker(marker, username, userId);
         return "ok";
     }
 }
