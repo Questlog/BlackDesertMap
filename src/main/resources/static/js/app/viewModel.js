@@ -114,7 +114,12 @@ define('viewModel', [
             self.editViewModel(new EditViewModel(self, self.selectedLayer()));
             self.mode('edit');
             self.editViewModel().enable();
-        };        
+        };
+
+
+        bdomap.map.on('click', function (e) {
+            self.clearSelection();
+        });
 
         bdomap.map.on('draw:created', function (e) {
             if(self.createdLayer()){
