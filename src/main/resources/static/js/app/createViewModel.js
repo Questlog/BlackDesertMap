@@ -4,23 +4,16 @@ define('createViewModel', [
     'newFormFieldViewModel',
     'formField',
     'helperFunctions',
-    'formFieldsEditorViewModel'
-], function($, ko, NewFormFieldViewModel, FormField, helper, FormFieldsEditor) {
+    'formFieldsEditorViewModel',
+    'typePickerViewModel'
+], function($, ko, NewFormFieldViewModel, FormField, helper, FormFieldsEditor, TypePicker) {
 
     return function (viewModel) {
         var self = this;
 
-        self.newObjTypeName = ko.observable(viewModel.types()[0].name);
         self.formFieldsEditor = ko.observable(new FormFieldsEditor(viewModel));
+        self.typePicker = ko.observable(new TypePicker(self.formFieldsEditor().changeType, viewModel.types()[0].name));
         
-        self.changeNewObjType = function (event) {
-            var option = event.target.selectedOptions[0];
-            var type = ko.dataFor(option);
-            var typeName = type.name;
-            self.newObjTypeName(typeName);
-            self.formFieldsEditor().changeType(typeName);
-        };
-
         self.cancel = function () {
             viewModel.hideDrawControl();
             if(viewModel.createdLayer())
@@ -29,7 +22,7 @@ define('createViewModel', [
         };
 
         self.save = function () {
-            var typeName = self.newObjTypeName();
+            var typeName = self.typePicker().selectedTypeName();
             if (typeName == '' || typeName == null){
                 alert('Vor dem Speichern muss ein Typ ausgewählt sein.');
                 return;

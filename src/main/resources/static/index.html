@@ -142,17 +142,7 @@
                 </div>
                 <div id="createMode" class="sidebarContent row" data-bind="if: mode() === 'create'">
                     <form data-bind="with: createViewModel">
-                        <div class="form-group">
-                            <label class="control-label">Typ
-                            </label>
-                            <select data-width="100%" class="selectpicker" id="newObjectType" data-bind="foreach: $root.groups, selectpicker: {onChange: changeNewObjType}" >
-                                <optgroup data-bind="attr: {label: displayName}, foreach: types">
-                                    <!-- ko with: $root.getType($data) -->
-                                    <option data-bind="text: displayName, value: name"></option>
-                                    <!-- /ko -->
-                                </optgroup>
-                            </select>
-                        </div>
+                        <div data-bind="template:{ name: 'typePickerTmpl', data: typePicker }"></div>
 
                         <div data-bind="template:{ name: 'formFieldsEditorTmpl', data: formFieldsEditor }"></div>
 
@@ -164,6 +154,8 @@
                 </div>
                 <div id="editMode" class="sidebarContent row" data-bind="if: mode() === 'edit'">
                     <form data-bind="with: editViewModel">
+                        <div data-bind="template:{ name: 'typePickerTmpl', data: typePicker }"></div>
+
                         <div data-bind="template:{ name: 'formFieldsEditorTmpl', data: formFieldsEditor }"></div>
 
                         <div class="btn-group form-group" role="group" >
@@ -178,6 +170,20 @@
             </div>
 
             <div id="mapid"></div>
+
+            <script id="typePickerTmpl" type="text/html">
+                <div class="form-group">
+                    <label class="control-label">Typ
+                    </label>
+                    <select data-width="100%" class="selectpicker" data-bind="foreach: $root.groups, selectedOptions: selectedOptions, selectpicker: {onChange: onChangeType}" >
+                        <optgroup data-bind="attr: {label: displayName}, foreach: types">
+                            <!-- ko with: $root.getType($data) -->
+                            <option data-bind="text: displayName, value: name"></option>
+                            <!-- /ko -->
+                        </optgroup>
+                    </select>
+                </div>
+            </script>
 
             <script id="formFieldTmpl" type="text/html">
                 <div class="draggableItem">
@@ -254,7 +260,6 @@
             <script id="fieldViewerTmpl" type="text/html">
                 <div class="container-fluid" data-bind="template: $parent.getFieldTemplate($data)"></div>
             </script>
-
             <script id="screenshotFieldTmpl" type="text/html">
                 <div class="row">
                     <div data-bind="text: label"></div>
@@ -265,20 +270,17 @@
                     <!-- /ko -->
                 </div>
             </script>
-
             <script id="linkFieldTmpl" type="text/html">
                 <div class="row">
                     <a data-bind="attr:{href:value}"><h4 data-bind="text: label"></h4></a>
                 </div>
             </script>
-
             <script id="defaultFieldTmpl" type="text/html">
                 <div class="row">
                     <h4 data-bind="visible: label.length > 0, text: label"></h4>
                     <p data-bind="text: value"></p>
                 </div>
             </script>
-
             <script id="checkboxFieldTmpl" type="text/html">
                 <div class="row">
                     <p>

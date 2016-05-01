@@ -3,14 +3,16 @@ define('editViewModel', [
     'knockout',
     'formField',
     'helperFunctions',
-    'formFieldsEditorViewModel'
-], function($, ko, FormField, helper, FormFieldsEditor) {
+    'formFieldsEditorViewModel',
+    'typePickerViewModel'
+], function($, ko, FormField, helper, FormFieldsEditor, TypePicker) {
     
     return function(viewModel, layer){
         var self = this;
         
         self.layer = ko.observable(layer);
         self.formFieldsEditor = ko.observable(new FormFieldsEditor(viewModel, layer.bdoMapObj));
+        self.typePicker = ko.observable(new TypePicker(self.formFieldsEditor().changeType, layer.bdoMapObj.type));
         
         self.enable = function(){
             self.layer().editing.enable();
@@ -67,6 +69,7 @@ define('editViewModel', [
                 layer.bdoMapObj = mapObj;
                 helper.removeLayer(layer);
             }
+            layer.bdoMapObj.type = self.typePicker().selectedTypeName();
 
             layer.editing.disable();
             viewModel.clearSelection();
