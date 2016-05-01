@@ -48,6 +48,16 @@ html, body {
     height: 150px;
 }
 
+.audit {
+    font-size: 0.8em;
+    bottom: 0;
+    position: absolute;
+}
+
+.audit span {
+    color: white;
+}
+
 .bdoMapIcon {
 
 }
@@ -72,7 +82,7 @@ html, body {
     color: white;
 }
 
-#leftsidebar a {
+.dataField a {
     text-decoration: underline;
 }
 

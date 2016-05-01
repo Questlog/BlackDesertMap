@@ -8,6 +8,7 @@ define('layerViewerViewModel', [
         self.maoObj = ko.observable(layer.bdoMapObj);
         self.typeName = ko.observable(layer.bdoMapObj.type);
         self.fields = ko.observableArray(layer.bdoMapObj.params);
+        self.audit = ko.observable(layer.bdoMapObj.audit);
 
         self.getFieldTemplate = function (data) {
             var type = data.type;

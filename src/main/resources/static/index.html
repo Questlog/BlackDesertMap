@@ -138,6 +138,14 @@
                         <h1 class="headline" data-bind="text: type().displayName"></h1>
                         <button class="btn btn-default" id="editButton" data-bind="visible: $root.authenticated(), click: $root.editLayer">Bearbeiten</button>
                         <div data-bind="template: { name: 'fieldViewerTmpl', foreach: fields }"></div>
+                        <div class="audit" data-bind="with: audit">
+                            <p data-bind="if: $data.createdBy">
+                                Erstellt am <span data-bind="text: createdAt"></span> von <span data-bind="text: createdBy.username"></span>
+                            </p>
+                            <p data-bind="if: $data.modifiedBy">
+                                Bearbeitet am <span data-bind="text: modifiedAt"></span> von <span data-bind="text: modifiedBy.username"></span>
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div id="createMode" class="sidebarContent row" data-bind="if: mode() === 'create'">
@@ -258,7 +266,7 @@
             </script>
 
             <script id="fieldViewerTmpl" type="text/html">
-                <div class="container-fluid" data-bind="template: $parent.getFieldTemplate($data)"></div>
+                <div class="container-fluid dataField" data-bind="template: $parent.getFieldTemplate($data)"></div>
             </script>
             <script id="screenshotFieldTmpl" type="text/html">
                 <div class="row">

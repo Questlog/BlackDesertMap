@@ -404,7 +404,7 @@ public class WebService implements Service {
 
         try{
             LOGGER.debug("New Marker by " + username + "(" + userId + "): " + substring(marker, 0, 200));
-            Document m = tr.addNewMarker(marker, username, userId);
+            Document m = tr.addNewMarker(marker, userId, username);
             return gson.toJson(m);
         } catch (Transactions.TransactionException e) {
             return e.getClass().getSimpleName();
@@ -423,7 +423,7 @@ public class WebService implements Service {
 
         LOGGER.debug("Update Marker by " + username + "(" + userId + "): " + substring(marker, 0, 200));
 
-        tr.updateMarker(marker, username, userId);
+        tr.updateMarker(marker, userId, username);
         return "ok";
     }
 
@@ -439,7 +439,7 @@ public class WebService implements Service {
 
         LOGGER.debug("Remove Marker by " + username + "(" + userId + "): " + substring(marker, 0, 200));
 
-        tr.deleteMarker(marker, username, userId);
+        tr.deleteMarker(marker, userId, username);
         return "ok";
     }
 }
