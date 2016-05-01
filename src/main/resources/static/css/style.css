@@ -1,14 +1,17 @@
 html, body {
-    height: 100%;
-
     /*font-family: Calibri, serif;*/
     /*font-size: 14pt;*/
-    margin-top: 15px;
+    /*margin-top: 15px;*/
+    height: 100%;
 }
 
 #mapcontainer {
     height: 100%;
-    margin-top: 15px;
+    padding-top: 30px;
+}
+
+.gap {
+    height: 30px;
 }
 
 #mapid {
@@ -24,7 +27,7 @@ html, body {
     height: 100%;
     width: 20%;
     /*opacity: 0.95;*/
-    /*top: 0;*/
+    top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.37);
     position: absolute;
@@ -50,8 +53,7 @@ html, body {
 
 .audit {
     font-size: 0.8em;
-    bottom: 0;
-    position: absolute;
+    margin-top: 30px;
 }
 
 .audit span {

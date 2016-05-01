@@ -10,11 +10,11 @@ import org.apache.logging.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+
+import javax.print.Doc;
 import java.util.*;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.or;
+import static com.mongodb.client.model.Filters.*;
 
 
 public class Transactions {
@@ -54,33 +54,30 @@ public class Transactions {
         return getMarkers(isAuthenticated, type, null);
     }
     public List<Document> getMarkers(boolean isAuthenticated, String type, String id) {
-
-        Document query = new Document();
+        List<Bson> query = new ArrayList<Bson>();
 
         if(!isAuthenticated){
-            query.append("params.name", "authRequired");
-            query.append("$or",
-                    Arrays.asList(
-                            new Document("params.value", false),
-                            new Document("params.value", "")
+            query.add(elemMatch("params",
+                and(
+                    eq("name", "authRequired"),
+                    or(
+                        eq("value", false),
+                        eq("value", "")
                     )
-            );
+                )
+            ));
         }
         if(type != null)
-            query.append("type", type);
+            query.add(eq("type", type));
         if(id != null)
-            query.append("_id", new ObjectId(id));
+            query.add(eq("_id", new ObjectId(id)));
 
-        query.append("$or",
-                Arrays.asList(
-                        new Document("deleted", new Document("$exists", false)),
-                        new Document("deleted", false)
-                )
-        );
+        query.add(or(
+            exists("deleted", false),
+            eq("deleted", false)
+        ));
 
-        List<Document> markers = markerCollection.aggregate(Collections.singletonList(new Document("$match", query))).into(new ArrayList<Document>());
-
-        //List<Document> markers = markerCollection.find(query).into(new ArrayList<Document>());
+        List<Document> markers = markerCollection.find(and(query)).into(new ArrayList<Document>());
 
         for(Document m : markers){
             String _id = m.getObjectId("_id").toHexString();

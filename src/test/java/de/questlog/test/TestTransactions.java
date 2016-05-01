@@ -76,7 +76,7 @@ public class TestTransactions {
         Document marker = tr.addNewMarker(markerJson, user.getObjectId("_id").toHexString(), "testInsertMarker");
 
         assertNotNull(marker);
-        assertNotNull(marker.getObjectId("_id"));
+        assertNotNull(marker.getString("id"));
     }
 
     @Test
