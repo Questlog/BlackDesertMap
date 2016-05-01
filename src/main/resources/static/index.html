@@ -247,12 +247,8 @@
                                     Label
                                     <input class="form-control input-sm" type="text" data-bind="value: label" />
                                 </label>
-                                <label class="control-label">
-                                    Platzhalter
-                                    <input class="form-control input-sm" type="text" data-bind="value: placeholder" />
-                                </label>
-                                <label class="control-label">
-                                    Standardwert
+                                <label class="control-label" data-bind="ifnot: type() == 'checkbox'">
+                                    Wert
                                     <input class="form-control input-sm" type="text" data-bind="value: value" />
                                 </label>
                             </div>
