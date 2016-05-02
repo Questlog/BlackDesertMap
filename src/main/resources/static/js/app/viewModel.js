@@ -35,7 +35,7 @@ define('viewModel', [
             self.loginForm(new LoginForm(function(authOk){
                 self.authenticated(authOk);
                 if(authOk)
-                    location.reload(); //TODO make this not necessary
+                    location.reload();
                 self.mode('view');
             }));
             self.mode('login');

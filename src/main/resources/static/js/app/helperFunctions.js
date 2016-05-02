@@ -192,7 +192,11 @@ define('helperFunctions', [
             var layer = allLayersById[id];
             if(layer) {
                 viewModel.selectLayer(layer);
-                bdomap.map.setView(layer.getLatLng(), bdomap.map.getMaxZoom());
+                if (layer.constructor == L.Marker) {
+                    bdomap.map.setView(layer.getLatLng(), bdomap.map.getMaxZoom());
+                } else {
+                    bdomap.map.setView(layer.getLatLngs()[0], bdomap.map.getMaxZoom());
+                }
             }
         }
 
