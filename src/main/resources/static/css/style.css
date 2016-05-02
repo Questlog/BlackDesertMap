@@ -83,10 +83,18 @@ html, body {
 #leftsidebar h4 {
     color: white;
 }
+#leftsidebar textarea {
+    font-family: monospace;
+}
 
 .dataField a {
     text-decoration: underline;
 }
+.headline {
+    text-align: center;
+    font-size: 2em;
+}
+
 
 
 .groupName {
@@ -111,12 +119,20 @@ html, body {
 #information {
     min-height: 200px;
 }
-.headline {
-    text-align: center;
-    font-size: 2em;
+
+pre {
+    /* display: block; */
+    padding: 0;
+    margin: 0;
+    font-size: inherit;
+    /* line-height: 1.42857143; */
+    /* word-break: break-all; */
+    /* word-wrap: break-word; */
+    color: inherit;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
 }
-
-
 
 .btn {
     padding: 0.2em 0.8em;

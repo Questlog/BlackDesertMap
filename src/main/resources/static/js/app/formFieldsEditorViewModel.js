@@ -12,7 +12,8 @@ define('formFieldsEditorViewModel', [
             {"name": "text", "displayName": "Text"},
             {"name": "checkbox", "displayName": "Checkbox"},
             {"name": "screenshot", "displayName": "Screenshot"},
-            {"name": "link", "displayName": "Link"}
+            {"name": "link", "displayName": "Link"},
+            {"name": "textarea", "displayName": "Fließtext"}
         ]);
 
 

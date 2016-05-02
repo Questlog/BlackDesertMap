@@ -29,6 +29,8 @@ define('newFormFieldViewModel', [
         } else if (internalType.name === "link") {
             formFieldData.element = "input";
             formFieldData.type = "text";
+        } else if (internalType.name === "textarea") {
+            formFieldData.element = "textarea";
         }
 
         self.type(internalType);

@@ -255,7 +255,8 @@
                                 </label>
                                 <label class="control-label" data-bind="ifnot: type() == 'checkbox'">
                                     Wert
-                                    <input class="form-control input-sm" type="text" data-bind="value: value" />
+                                    <input class="form-control input-sm" type="text" data-bind="value: value, visible: element() != 'textarea'" />
+                                    <textarea class="form-control input-sm" data-bind="value: value, visible: element() == 'textarea'" ></textarea>
                                 </label>
                             </div>
                             <div class="btn-group" role="group" >
@@ -302,6 +303,12 @@
                         <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
                     <!-- /ko -->
                     </p>
+                </div>
+            </script>
+            <script id="textareaFieldTmpl" type="text/html">
+                <div class="row">
+                    <h4 data-bind="visible: label.length > 0, text: label"></h4>
+                    <pre data-bind="text: value"></pre>
                 </div>
             </script>
         </div>

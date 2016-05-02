@@ -23,7 +23,8 @@ define('layerViewerViewModel', [
                 return "checkboxFieldTmpl";
             if(type === 'link')
                 return "linkFieldTmpl";
-
+            if(type === 'textarea')
+                return "textareaFieldTmpl";
 
             return "defaultFieldTmpl";
         };
