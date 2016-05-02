@@ -152,6 +152,9 @@
                             </p>
                         </div>
                     </div>
+                    <div id="popupContent" data-bind="with: popupViewer" style="visibility: hidden; display: none;">
+                        <div data-bind="template: { name: 'fieldViewerTmpl', foreach: popupFields }"></div>
+                    </div>
                 </div>
                 <div id="createMode" class="sidebarContent row" data-bind="if: mode() === 'create'">
                     <form data-bind="with: createViewModel">
@@ -201,6 +204,11 @@
             <script id="formFieldTmpl" type="text/html">
                 <div class="draggableItem">
                     <div class="pull-right" data-bind="if: optional">
+                        <div class="checkbox-inline">
+                            <label>
+                                <input type="checkbox" data-bind="checked: showInPopup">Im Popup
+                            </label>
+                        </div>
                         <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
                     </div>
                     <div class="form-group">

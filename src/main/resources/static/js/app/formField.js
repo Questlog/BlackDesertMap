@@ -12,6 +12,7 @@ define('formField', [
         self.value          =   ko.observable(data.value);
         self.internalType   =   ko.observable(data.internalType);
         self.optional       =   ko.observable(data.optional);
+        self.showInPopup    =   ko.observable(data.showInPopup);
         
         self.editing = ko.observable(false);
         self.edit = function () {

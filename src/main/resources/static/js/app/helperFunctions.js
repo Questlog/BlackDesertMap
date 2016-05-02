@@ -44,7 +44,14 @@ define('helperFunctions', [
                 mapObj.authRequired = formObj.value;
         });
     }
-    function saveMapObjToDatabase(mapObj, isNew, callback) {        
+
+    function saveMapObjToDatabase(mapObj, isNew, callback) {
+
+        var replacer = function (k, v) {
+            if(k == 'editing')
+                return undefined;
+            return v;
+        };
 
         var method = "PUT";
         if (isNew)
@@ -54,7 +61,7 @@ define('helperFunctions', [
             type: method,
             url: "/mapobj/" + mapObj.type,
             contentType: "application/json",
-            data: JSON.stringify(mapObj)
+            data: JSON.stringify(mapObj, replacer)
         }).done(callback);
     }
 
@@ -137,6 +144,14 @@ define('helperFunctions', [
                 viewModel.selectLayer(layer);
                 //console.log(layer);
             });
+
+            layer.on('mouseover', function (e) {
+                viewModel.hoverLayer(layer);
+            });
+            layer.on('mouseout', function (e) {
+                //viewModel.stopHoverLayer();
+            });
+
         }
     }
 

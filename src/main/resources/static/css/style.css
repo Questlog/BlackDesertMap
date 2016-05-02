@@ -120,6 +120,23 @@ html, body {
     min-height: 200px;
 }
 
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: rgba(0, 0, 0, 0.62);
+}
+.leaflet-popup-content{
+    margin: 0px 6px;
+}
+.leaflet-popup-content p {
+    margin: 0 0 10px;
+}
+.leaflet-popup-scrolled {
+    border-bottom: none;
+    border-top: none;
+}
+#popupContent img {
+    max-width: 100% !important;
+}
+
 pre {
     /* display: block; */
     padding: 0;

@@ -29,6 +29,12 @@ define('layerViewerViewModel', [
             return "defaultFieldTmpl";
         };
 
+        self.popupFields = ko.computed(function () {
+            return ko.utils.arrayFilter(self.fields(), function(item) {
+                return item.showInPopup;
+            });
+        });
+
         self.shareUrl = ko.computed(function () {
             return location.origin + location.pathname + '?id=' + self.mapObj().id;
         });

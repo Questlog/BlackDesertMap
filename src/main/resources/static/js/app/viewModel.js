@@ -1,6 +1,7 @@
 define('viewModel', [
     'jquery',
     'knockout',
+    'leaflet',
     'bdomap',
     'helperFunctions',
     'loginViewModel',
@@ -8,7 +9,7 @@ define('viewModel', [
     'createViewModel',
     'editViewModel',
     'layerViewerViewModel'
-], function($, ko, bdomap, helper, LoginForm, RegisterForm, CreateViewModel, EditViewModel, LayerViewer) {
+], function($, ko, L, bdomap, helper, LoginForm, RegisterForm, CreateViewModel, EditViewModel, LayerViewer) {
 
     var viewModel = function() {
         var self = this;
@@ -30,6 +31,9 @@ define('viewModel', [
         self.createViewModel    = ko.observable();
         self.editViewModel      = ko.observable();
         self.layerViewer        = ko.observable();
+        
+        self.popupViewer        = ko.observable();
+        self.pupup = null;
 
         self.login = function(){
             self.loginForm(new LoginForm(function(authOk){
@@ -100,6 +104,54 @@ define('viewModel', [
             self.selectedLayer(null);
             self.layerViewer(null);
         };
+
+        self.hoverLayer = function(layer){
+            //self.layerViewer(new LayerViewer(self, layer));
+            self.showPopup(layer);
+        };
+
+        self.stopHoverLayer = function(){
+            //if(self.selectedLayer())
+            //    self.layerViewer(new LayerViewer(self, self.selectedLayer()));
+            self.hidePopup();
+        };
+
+        self.showPopup = function(layer){
+            self.popupViewer();
+            self.popupViewer(new LayerViewer(self, layer));
+
+            if(self.popupViewer().popupFields().length > 0) {
+                var latLng = [];
+                if (layer.constructor == L.Marker) {
+                    latLng = layer.getLatLng();
+                } else {
+                    latLng = layer.getLatLngs()[0];
+                }
+
+                if(!self.popup){
+                    self.popup = L.popup({
+                        offset: [0, -23],
+                        minWidth: 150,
+                        maxHeight: 400,
+                        closeButton: false,
+                        autoPan: false
+                    });
+                }
+                self.popup.setLatLng(latLng)
+                    .setContent($("#popupContent").html())
+                    .openOn(bdomap.map);
+            } else {
+                self.hidePopup();
+            }
+        };
+
+        self.hidePopup = function(){
+            if(self.popup){
+                bdomap.map.closePopup(self.popup);
+                self.popupViewer();
+            }
+        };
+
 
         self.changeToCreate = function(){
             self.createViewModel(new CreateViewModel(self));
