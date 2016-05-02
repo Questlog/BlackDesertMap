@@ -19,34 +19,11 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
                     "optional": false
-                },
-                {
-                    "name" : "description",
-                    "label" : "Beschreibung",
-                    "element" : "input",
-                    "type" : "text",
-                    "value" : "",
-                    "placeholder": "",
-                    "options": [],
-                    "defaultValue": "",
-                    "optional": true
-                },
-                {
-                    "name" : "image",
-                    "label" : "Screenshot",
-                    "element" : "input",
-                    "type" : "text",
-                    "value" : "",
-                    "placeholder": "",
-                    "options": [],
-                    "defaultValue": "",
-                    "optional": true,
-                    "internalType": "screenshot"
                 }
             ]
         },
@@ -69,7 +46,34 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": "",
+                    "optional": false
+                }
+            ]
+        },
+        "noteGuide": {
+            "name" : "noteGuide",
+            "displayName": "Guide Notiz",
+            "displayNamePlural": "Guide Notizen",
+            "style": {
+                "color": "#000000",
+                "weight": 5,
+                "opacity": 0.65
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/noteGuide.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -93,7 +97,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "Placeholder": "",
                     "Options": ["authRequired"],
                     "defaultValue": "",
@@ -109,6 +113,30 @@
                     "Options": [],
                     "defaultValue": "",
                     "optional": true
+                }
+            ]
+        },
+        "fishingGreenSpot" : {
+            "name" : "fishingGreenSpot",
+            "displayName" : "Green Spot",
+            "displayNamePlural" : "Green Spots",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/fishingGreenSpot.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "checked",
+                    "Placeholder": "",
+                    "Options": ["authRequired"],
+                    "defaultValue": "",
+                    "optional": false
                 }
             ]
         },
@@ -128,22 +156,59 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "Placeholder": "",
                     "Options": ["authRequired"],
                     "defaultValue": "",
                     "optional": false
-                },
+                }
+            ]
+        },
+        "fishingGoldSpot" : {
+            "name" : "fishingGoldSpot",
+            "displayName" : "Gold Spot",
+            "displayNamePlural" : "Gold Spots",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/fishingGoldSpot.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
                 {
-                    "name" : "description",
-                    "label" : "Beschreibung",
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
                     "element" : "input",
-                    "type" : "text",
-                    "value" : "",
-                    "placeholder": "",
-                    "Options": [],
+                    "type" : "checkbox",
+                    "value" : "checked",
+                    "Placeholder": "",
+                    "Options": ["authRequired"],
                     "defaultValue": "",
-                    "optional": true
+                    "optional": false
+                }
+            ]
+        },
+        "fishingBlueSpot" : {
+            "name" : "fishingBlueSpot",
+            "displayName" : "Blue Spot",
+            "displayNamePlural" : "Blue Spots",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/fishingBlueSpot.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "checked",
+                    "Placeholder": "",
+                    "Options": ["authRequired"],
+                    "defaultValue": "",
+                    "optional": false
                 }
             ]
         },
@@ -164,7 +229,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -199,7 +264,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -234,7 +299,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -269,7 +334,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -304,7 +369,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -339,7 +404,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -375,7 +440,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -410,7 +475,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -445,7 +510,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -480,7 +545,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -515,7 +580,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -550,7 +615,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -585,7 +650,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -601,6 +666,30 @@
                     "options": [],
                     "defaultValue": "",
                     "optional": true
+                }
+            ]
+        },
+        "rainbowStone": {
+            "name" : "rainbowStone",
+            "displayName" : "Regenbogen Stein",
+            "displayNamePlural" : "Regenbogen Steine",
+            "style" : {
+            },
+            "icon": {
+                "iconUrl": "images/markerIcons/rainbowStone.png",
+                "iconAnchor": [11,31]
+            },
+            "dataFields" : [
+                {
+                    "name" : "authRequired",
+                    "label" : "Benötigt login",
+                    "element" : "input",
+                    "type" : "checkbox",
+                    "value" : "checked",
+                    "placeholder": "",
+                    "options": ["authRequired"],
+                    "defaultValue": "",
+                    "optional": false
                 }
             ]
         },
@@ -621,7 +710,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -645,7 +734,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -669,7 +758,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -693,7 +782,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -717,7 +806,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -741,7 +830,7 @@
                     "label" : "Benötigt login",
                     "element" : "input",
                     "type" : "checkbox",
-                    "value" : "",
+                    "value" : "checked",
                     "placeholder": "",
                     "options": ["authRequired"],
                     "defaultValue": "",
@@ -757,9 +846,12 @@
             "icon" : "",
             "types" : [
                 "treasureChest",
-                "fishingSpot",
                 "horse",
-                "note"
+                "note",
+                "noteGuide",
+                "fishingBlueSpot",
+                "fishingGoldSpot",
+                "fishingGreenSpot"
             ]
         },
         "ores" : {
@@ -779,7 +871,8 @@
                 "platinum",
                 "ruby",
                 "sapphire",
-                "topaz"
+                "topaz",
+                "rainbowStone"
             ]
         },
         "trees": {
