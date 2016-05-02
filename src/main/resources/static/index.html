@@ -170,7 +170,7 @@
                         <div data-bind="template:{ name: 'formFieldsEditorTmpl', data: formFieldsEditor }"></div>
 
                         <div class="btn-group form-group" role="group" >
-                            <button class="btn btn-primary" data-bind="click: save">Speichern</button>
+                            <button class="btn btn-success" data-bind="click: save">Speichern</button>
                             <button class="btn btn-default" data-bind="click: redraw, attr: {disabled: $root.drawControlVisible}">Neu zeichnen</button>
                             <button class="btn btn-default" data-bind="click: remove">Löschen</button>
                             <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
@@ -202,7 +202,8 @@
                         <a class="btn btn-danger danger btn-xs" data-bind="click: $parent.removeFormField" role="button">Entfernen</a>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" data-bind="text: label, attr: {for:name}"></label>
+                        <label class="control-label" data-bind="text: label, attr: {for:name}, click: edit, visible: !editing()"></label>
+                        <input class="control-label" data-bind="value: label, visible: editing, hasFocus: editing">
 
                         <!--ko if: element() === "select" -->
                         <select class="form-control input-sm" data-bind="options: options, attr: {id:name}, value:value"></select>
@@ -256,7 +257,7 @@
                                 </label>
                             </div>
                             <div class="btn-group" role="group" >
-                                <button class="btn btn-primary" data-bind="click: save">Hinzufügen</button>
+                                <button class="btn btn-success" data-bind="click: save">Hinzufügen</button>
                                 <button class="btn btn-default" data-bind="click: cancel">Abbrechen</button>
                             </div>
                         </div>

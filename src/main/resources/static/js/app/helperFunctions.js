@@ -132,7 +132,7 @@ define('helperFunctions', [
             //layer.bindPopup(layer.bdoMapObj.type);
             layer.on('click', function () {
                 viewModel.selectLayer(layer);
-                console.log(layer);
+                //console.log(layer);
             });
         }
     }

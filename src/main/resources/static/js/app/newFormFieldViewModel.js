@@ -7,6 +7,9 @@ define('newFormFieldViewModel', [
         var self = this;
         var formFieldData = {};
 
+        self.type = ko.observable();
+        self.formField = ko.observable();
+
         formFieldData.internalType =  internalType.name;
         formFieldData.name = internalType.name;
         formFieldData.label = internalType.displayName;
@@ -28,8 +31,8 @@ define('newFormFieldViewModel', [
             formFieldData.type = "text";
         }
 
-        self.type = ko.observable(internalType);
-        self.formField = ko.observable(new FormField(formFieldData));
+        self.type(internalType);
+        self.formField(new FormField(formFieldData));
 
         self.save = function(){
             self.formField().optional(true);

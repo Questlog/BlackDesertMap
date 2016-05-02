@@ -18,8 +18,7 @@ define('formFieldsEditorViewModel', [
 
         self.requiredFormFields = ko.observableArray([]);
         self.formFields = ko.observableArray([]);
-        self.newFormField = ko.observable(null);
-
+        self.newFormField = ko.observable();
 
         var dataFields = [];
         if(mapObj) {
@@ -53,7 +52,6 @@ define('formFieldsEditorViewModel', [
         };
 
         self.removeFormField = function (formField) {
-            console.log(formField);
             self.formFields.remove(formField);
         };
 
@@ -70,8 +68,11 @@ define('formFieldsEditorViewModel', [
         };
 
         self.getFormData = function(){
-            var formData = ko.toJS(self.requiredFormFields());
-            var optionalFormData = ko.toJS(self.formFields());
+            var mapping = {
+                'ignore': ['editing']
+            };
+            var formData = ko.toJS(self.requiredFormFields(), mapping);
+            var optionalFormData = ko.toJS(self.formFields(), mapping);
             Array.prototype.push.apply(formData, optionalFormData);
 
             return formData;
