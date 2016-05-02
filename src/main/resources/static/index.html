@@ -140,6 +140,8 @@
                     <div id="information" data-bind="with: layerViewer">
                         <h1 class="headline" data-bind="text: type().displayName"></h1>
                         <button class="btn btn-default" id="editButton" data-bind="visible: $root.authenticated(), click: $root.editLayer">Bearbeiten</button>
+                        <a data-bind="attr: {href: shareUrl}">#Permalink</a>
+                        <!--<button class="btn btn-default" data-bind="click: shareLayer">Share</button>-->
                         <div data-bind="template: { name: 'fieldViewerTmpl', foreach: fields }"></div>
                         <div class="audit" data-bind="with: audit">
                             <p data-bind="if: $data.createdBy">

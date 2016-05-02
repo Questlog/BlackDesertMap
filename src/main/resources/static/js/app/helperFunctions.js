@@ -9,6 +9,8 @@ define('helperFunctions', [
     'bootstrapSelect'
 ], function($, bdomap, ko, L) {
 
+    var allLayersById = {};
+
     function updateGeoJsonOfLayer(layer){
         var shape = layer.toGeoJSON();
         var geojson = shape;
@@ -119,6 +121,7 @@ define('helperFunctions', [
             layer.setStyle(types[typename]["style"]);
         }
 
+        allLayersById[mapObj.id] = layer;
         applyBindingsToLayer(viewModel, layer);
         bdomap.drawnItems.addLayer(layer);
         bdomap.layerGroups[typename].addLayer(layer);
@@ -181,7 +184,19 @@ define('helperFunctions', [
 
         });
     }
+    
+    function selectMarkerOfUrl(viewModel) {
+        var url = window.location.href;
+        var id = /id=([^&#]+)/.exec(url)[1];
+        if(id){
+            var layer = allLayersById[id];
+            if(layer) {
+                viewModel.selectLayer(layer);
+                bdomap.map.setView(layer.getLatLng(), bdomap.map.getMaxZoom());
+            }
+        }
 
+    }
 
     return {
         createMapObjectFromLayer: createMapObjectFromLayer,
@@ -193,6 +208,7 @@ define('helperFunctions', [
         addDatabaseObject: addDatabaseObject,
         applyBindingsToLayer: applyBindingsToLayer,
         setUpType: setUpType,
-        bindHandlers: bindHandlers
+        bindHandlers: bindHandlers,
+        selectMarkerOfUrl: selectMarkerOfUrl
     };
 });

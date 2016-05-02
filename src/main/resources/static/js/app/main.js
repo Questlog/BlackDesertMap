@@ -118,14 +118,17 @@ require([
     }).error(function(jqXHR, textStatus, errorThrown){
         alert("Error retrieving types: " + errorThrown);
     }).then(
-        $.getJSON("/mapobj", function (data) {
-            $.each( data, function( i, item ) {
-                helper.addDatabaseObject(viewModel, item);
-            });
-        })
+        function (){
+            return $.getJSON("/mapobj", function (data) {
+                $.each( data, function( i, item ) {
+                    helper.addDatabaseObject(viewModel, item);
+                });
+            }) 
+        }
     ).then(
         function() {
             helper.bindHandlers(viewModel);
+            helper.selectMarkerOfUrl(viewModel);
         }
     );
 

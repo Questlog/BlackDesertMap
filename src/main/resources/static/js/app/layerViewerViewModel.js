@@ -5,7 +5,7 @@ define('layerViewerViewModel', [
     return function(viewModel, layer) {
         var self = this;
         self.type = ko.observable(viewModel.getType(layer.bdoMapObj.type));        
-        self.maoObj = ko.observable(layer.bdoMapObj);
+        self.mapObj = ko.observable(layer.bdoMapObj);
         self.typeName = ko.observable(layer.bdoMapObj.type);
         self.fields = ko.observableArray(layer.bdoMapObj.params);
         self.audit = ko.observable(layer.bdoMapObj.audit);
@@ -26,6 +26,14 @@ define('layerViewerViewModel', [
 
 
             return "defaultFieldTmpl";
+        };
+
+        self.shareUrl = ko.computed(function () {
+            return location.origin + location.pathname + '?id=' + self.mapObj().id;
+        });
+
+        self.shareLayer = function(){
+            window.prompt("Der Link zum Teilen:", location.origin + location.pathname + '?id=' + self.mapObj().id);
         };
     };
 });
