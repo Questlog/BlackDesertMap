@@ -23,7 +23,7 @@ define('viewModel', [
 
         self.selectedLayer      = ko.observable();
 
-        self.createdLayer       = ko.observable(); 
+        self.createdLayer       = ko.observable();
         self.drawControlVisible = ko.observable(false);
 
         self.loginForm          = ko.observable();
@@ -98,6 +98,7 @@ define('viewModel', [
         self.selectLayer = function(layer){
             self.selectedLayer (layer);
             self.layerViewer(new LayerViewer(self, layer));
+            self.showPopup(layer);
         };
 
         self.clearSelection = function(){
