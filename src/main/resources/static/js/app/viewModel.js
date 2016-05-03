@@ -23,7 +23,7 @@ define('viewModel', [
 
         self.selectedLayer      = ko.observable();
 
-        self.createdLayer       = ko.observable();
+        self.createdLayer       = ko.observable(); 
         self.drawControlVisible = ko.observable(false);
 
         self.loginForm          = ko.observable();
