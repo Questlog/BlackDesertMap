@@ -133,7 +133,7 @@ html, body {
     border-bottom: none;
     border-top: none;
 }
-#popupContent img {
+.popup img {
     max-width: 100% !important;
 }
 

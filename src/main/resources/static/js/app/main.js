@@ -48,6 +48,10 @@ require.config({
         ],
         bootstrapSelect: [
             '../lib/bootstrap-select'
+        ],
+        lity: [
+            '../lib/lity.min',
+            '../lib/lity'
         ]
     }
 });
@@ -58,8 +62,9 @@ require([
     'knockout',
     'viewModel',
     'domReady!',
-    'helperFunctions'
-], function($, ui, ko, viewModel, dom, helper) {
+    'helperFunctions',
+    'lity'
+], function($, ui, ko, viewModel, dom, helper, lity) {
 
     if(window.location.port === "4567"){
         alert("Die Adresse worfox.net:4567 ist alt, du wirst jetzt auf bdomap.worfox.net weitergeleitet.");
@@ -95,6 +100,16 @@ require([
             var data = valueAccessor();
             var onChange = data.onChange;
             $(element).selectpicker().on('changed.bs.select', onChange);
+        }
+    };
+
+
+    var lightbox = lity();
+
+    ko.bindingHandlers.lightBox = {
+        init: function(element, valueAccessor) {
+            console.log(element);
+            $(element).on('click', '[data-lightbox]', lightbox);
         }
     };
 

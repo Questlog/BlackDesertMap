@@ -134,7 +134,8 @@ define('viewModel', [
                         minWidth: 150,
                         maxHeight: 400,
                         closeButton: false,
-                        autoPan: false
+                        autoPan: false,
+                        className: 'popup'
                     });
                 }
                 self.popup.setLatLng(latLng)

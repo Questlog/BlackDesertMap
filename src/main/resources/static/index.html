@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/bootstrap-select.css">
+        <link rel="stylesheet" href="css/lity.min.css">
     </head>
     <body>
         <nav class="navbar navbar-default navbar-fixed-top navbar-xs">
@@ -283,14 +284,14 @@
                 <div class="row">
                     <div data-bind="text: label"></div>
                     <!-- ko if: $data.value -->
-                    <a data-bind="attr: { href: value}">
+                    <a data-lity data-bind="attr: { href: value}, lightBox: $data">
                         <img class="img-responsive" data-bind="attr: { src: value}" />
                     </a>
                     <!-- /ko -->
                 </div>
             </script>
             <script id="linkFieldTmpl" type="text/html">
-                <div class="row">
+                <div  class="row">
                     <a data-bind="attr:{href:value}"><h4 data-bind="text: label"></h4></a>
                 </div>
             </script>
